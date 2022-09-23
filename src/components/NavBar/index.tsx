@@ -13,7 +13,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout } from '@/store/auth/slice'
 import { selectAuth } from '@/store/auth/selectors'
-import Clock from '../Clock'
 
 const useStyles = createStyles((theme, _params, getRef) => {
 	const icon: string = getRef('icon')
@@ -151,11 +150,10 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 			hiddenBreakpoint="sm"
 		>
 			<Navbar.Section grow>
-				<Text weight={500} size="sm" className={classes.title} mb="xs">
+				{/* <Text weight={500} size="sm" className={classes.title} mb="xs">
 					Bác sĩ {authData?.information?.name}
 				</Text>
 				<Stack className={classes.header}>
-					{/* <MantineLogo size={28} inverted /> */}
 					<Code className={classes.version}>
 						Phòng {authData?.information?.room?.roomNumber} -{' '}
 						{authData?.information?.room?.roomTypeName}{' '}
@@ -163,7 +161,7 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 					</Code>
 
 					<Clock />
-				</Stack>
+				</Stack> */}
 				{links}
 			</Navbar.Section>
 

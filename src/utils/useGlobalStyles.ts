@@ -1,4 +1,4 @@
-import { createStyles } from '@mantine/core'
+import { createStyles, keyframes } from '@mantine/core'
 
 const useGlobalStyles = createStyles((theme, _params, getRef) => ({
 	numberInput: {
@@ -20,4 +20,10 @@ const useGlobalStyles = createStyles((theme, _params, getRef) => ({
 	},
 }))
 
+export const bounce = keyframes({
+	'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
+	'40%, 43%': { transform: 'translate3d(0, -30px, 0)' },
+	'70%': { transform: 'translate3d(0, -15px, 0)' },
+	'90%': { transform: 'translate3d(0, -4px, 0)' },
+})
 export default useGlobalStyles

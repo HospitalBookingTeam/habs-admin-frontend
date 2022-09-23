@@ -501,6 +501,13 @@
     "@mantine/utils" "5.2.4"
     react-transition-group "4.4.2"
 
+"@mantine/spotlight@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-5.4.0.tgz#12d0cafb3942ea5a6e48e431b4910ae1ae7d8f34"
+  integrity sha512-7XLAP2bjSX2HkHwWGStMkm7186i8ytIk+ylXGXuYMF9miWmpa5RgzOVs1JyCKlkscbE+ZFriO9YGEyKSJaM2tA==
+  dependencies:
+    "@mantine/utils" "5.4.0"
+
 "@mantine/styles@5.2.4":
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.2.4.tgz#a1912660faa44e014b2541e7a1e14e77624fd1d0"
@@ -513,6 +520,11 @@
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.2.4.tgz#77e6f5073ab7f2b4b7727334be3698d8001091b4"
   integrity sha512-U+3+OpGRb7GbmhLUZcWhGvZelaMJ42MW88bZXH3Cej5VpLRdx3UgLTP6EhbQBIFGTW7S53Xq7K7eCx2xdUFfhg==
+
+"@mantine/utils@5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.4.0.tgz#af60d6034833c26ac3c1e92e57c844bd468a8760"
+  integrity sha512-XZE168OhQxrNz9wrFYFOdGDVxDH3wP0uZ5apBezHvf0D74qyUZjGzndkfXbvAq+/mVnMZA/fKju9ydo/IXMftg==
 
 "@radix-ui/number@1.0.0":
   version "1.0.0"

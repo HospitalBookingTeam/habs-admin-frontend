@@ -6,7 +6,6 @@ import { removeLocalItem } from '@/utils/storage'
 const initialState: AuthState = {
 	token: '',
 	isAuthenticated: false,
-	information: undefined,
 }
 
 export const authSlice = createSlice({
@@ -21,18 +20,12 @@ export const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(authApi.endpoints.login.matchPending, (state, action) => {
-				console.log('pending', action)
-			})
+			.addMatcher(authApi.endpoints.login.matchPending, (state, action) => {})
 			.addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
-				console.log('fulfilled', action)
-				state.information = action.payload.information
 				state.token = action.payload.token
 				state.isAuthenticated = true
 			})
-			.addMatcher(authApi.endpoints.login.matchRejected, (state, action) => {
-				console.log('rejected', action)
-			})
+			.addMatcher(authApi.endpoints.login.matchRejected, (state, action) => {})
 	},
 })
 
