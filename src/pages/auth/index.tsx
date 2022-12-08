@@ -24,6 +24,7 @@ const useStyles = createStyles((theme) => ({
 	},
 	imageHolder: {
 		borderRadius: 4,
+		maxWidth: 500,
 		overflow: 'hidden',
 		[`@media (max-width: ${theme.breakpoints.xl}px)`]: {
 			display: 'none',
@@ -83,13 +84,13 @@ const Login = () => {
 						<Stack className={classes.layout}>
 							<Stack justify="center" px={12} className={classes.formHolder}>
 								<Title order={2} align="center" mt="md" mb={50}>
-									Chào mừng bạn
+									Admin HABS
 								</Title>
 
 								<TextInput
 									withAsterisk={true}
-									label="Username"
-									placeholder="Admin"
+									label="Tài khoản"
+									placeholder="admin"
 									size="md"
 									{...form.getInputProps('username')}
 								/>
@@ -103,7 +104,6 @@ const Login = () => {
 									{...form.getInputProps('password')}
 								/>
 
-								<Checkbox label="Keep me logged in" mt="xl" size="md" />
 								<Button
 									type="submit"
 									fullWidth={true}

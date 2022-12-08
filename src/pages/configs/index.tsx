@@ -5,6 +5,8 @@ import { useSearchParams } from 'react-router-dom'
 
 const HospitalConfig = lazy(() => import('./HospitalConfig'))
 const DevConfig = lazy(() => import('./DevConfig'))
+const CheckupRecordManage = lazy(() => import('./CheckupRecordManage'))
+const TestRecordManage = lazy(() => import('./TestRecordManage'))
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -28,6 +30,18 @@ const tabs = [
 		label: 'Dev',
 		type: CONFIG_TYPES.DEV,
 		panel: <DevConfig />,
+	},
+	{
+		key: 'checkup_record',
+		label: 'Quản lí hồ sơ bệnh án',
+		type: CONFIG_TYPES.CHECKUP_RECORD,
+		panel: <CheckupRecordManage />,
+	},
+	{
+		key: 'test_record',
+		label: 'Quản lí hồ sơ xét nghiệm',
+		type: CONFIG_TYPES.TEST_RECORD,
+		panel: <TestRecordManage />,
 	},
 ]
 
