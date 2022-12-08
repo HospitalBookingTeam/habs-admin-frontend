@@ -1,6 +1,6 @@
 import RowWithLabel from '@/components/Row'
 import { MedicineDetail } from '@/entities/medicine'
-import { Prescription } from '@/entities/record'
+import { Prescription } from '@/entities/prescription'
 import { formatDate, renderDoseContent } from '@/utils/formats'
 import useGlobalStyles from '@/utils/useGlobalStyles'
 import { Accordion, Box, Grid, Stack, Title } from '@mantine/core'
