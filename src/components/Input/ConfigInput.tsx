@@ -16,7 +16,7 @@ import {
 import { UseFormReturnType } from '@mantine/form/lib/types'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconCircleCheck, IconInfoCircle } from '@tabler/icons'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 type ConfigInputProps = {
@@ -45,6 +45,7 @@ const ConfigInput = ({
 	const { classes, cx } = useStyles()
 	const { isDirty, getInputProps, setDirty } = form
 	const isAnimate = searchParams.get('id') === idString
+	const ref = useRef<HTMLDivElement | null>(null)
 
 	const [updateConfigMutation, { isLoading: isLoadingUpdate }] =
 		useUpdateConfigMutation()
@@ -71,12 +72,19 @@ const ConfigInput = ({
 		}
 	}, [isDirty, value])
 
+	useEffect(() => {
+		if (isAnimate) {
+			ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+		}
+	}, [isAnimate])
+
 	return (
 		<Paper
 			className={cx({ [classes.searched]: isAnimate })}
 			withBorder={true}
 			p="sm"
 			id={id.toString()}
+			ref={ref}
 		>
 			<Stack>
 				<Group align="baseline">

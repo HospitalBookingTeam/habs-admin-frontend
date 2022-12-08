@@ -12,6 +12,7 @@ const useStyles = createStyles((theme) => ({
 	root: {
 		paddingTop: 80,
 		paddingBottom: 80,
+		width: '100%',
 	},
 
 	label: {
@@ -56,19 +57,20 @@ const NotFound = () => {
 	return (
 		<Container className={classes.root}>
 			<div className={classes.label}>404</div>
-			<Title className={classes.title}>You have found a secret place.</Title>
+			<Title className={classes.title}>
+				Bạn đã truy cập vào 1 vùng chưa ai khám phá.
+			</Title>
 			<Text
 				color="dimmed"
 				size="lg"
 				align="center"
 				className={classes.description}
 			>
-				Unfortunately, this is only a 404 page. You may have mistyped the
-				address, or the page has been moved to another URL.
+				Có thể bạn đã vào đường link không đúng.
 			</Text>
 			<Group position="center">
 				<Button variant="subtle" size="md" onClick={() => navigate('/')}>
-					Take me back to home page
+					Về trang chủ
 				</Button>
 			</Group>
 		</Container>

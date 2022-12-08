@@ -6,6 +6,7 @@ import {
 	Navigate,
 	useNavigate,
 	useSearchParams,
+	useLocation,
 } from 'react-router-dom'
 import { Box, LoadingOverlay } from '@mantine/core'
 import { selectIsAuthenticated } from '@/store/auth/selectors'
@@ -22,20 +23,33 @@ const ConfigContainer = lazy(() => import('@/pages/configs'))
 
 const NotFound = lazy(() => import('@/components/NotFound/NotFoundPage'))
 
+const CheckupRecordHistory = lazy(() => import('@/pages/history/CheckupRecord'))
+const TestRecordHistory = lazy(() => import('@/pages/history/TestRecord'))
+
 const App = () => {
 	const { data: configList } = useGetConfigsQuery({})
 	const [, setSearchParams] = useSearchParams()
-
+	const navigate = useNavigate()
+	const location = useLocation()
 	const spotlightActions: SpotlightAction[] | undefined = configList?.map(
 		(item) => ({
 			title: item.name,
 			description: item.description,
 			onTrigger: () => {
-				setSearchParams({
-					tabs: convertConfigEnumValueToKey(item.type),
-					id: item.id.toString(),
-				})
-				document.getElementById(item.id.toString())?.scrollIntoView()
+				console.log('location.pathname', location.pathname)
+				if (location.pathname === '/') {
+					setSearchParams({
+						tabs: convertConfigEnumValueToKey(item.type),
+						id: item.id.toString(),
+					})
+					// document.getElementById(item.id.toString())?.scrollIntoView()
+				} else {
+					navigate(
+						`/?tabs=${convertConfigEnumValueToKey(
+							item.type
+						)}&id=${item.id.toString()}`
+					)
+				}
 			},
 		})
 	)
@@ -49,20 +63,26 @@ const App = () => {
 			nothingFoundMessage="Không tìm thấy kết quả..."
 		>
 			<Suspense fallback={<LoadingOverlay visible={true} />}>
-				<Box>
-					<Routes>
-						<Route path="/" element={<Outlet />}>
-							<Route element={<RequireAuth />}>
-								<Route index element={<ConfigContainer />} />
-							</Route>
+				<Routes>
+					<Route path="/" element={<Outlet />}>
+						<Route element={<RequireAuth />}>
+							<Route index element={<ConfigContainer />} />
 
-							<Route path="/login" element={<IsUserRedirect />}>
-								<Route index element={<Login />} />
+							<Route path="records" element={<Outlet />}>
+								<Route path=":id" element={<CheckupRecordHistory />} />
+							</Route>
+							<Route path="tests" element={<Outlet />}>
+								<Route path=":id" element={<TestRecordHistory />} />
 							</Route>
 						</Route>
-						<Route path="*" element={<NotFound />} />
-					</Routes>
-				</Box>
+
+						<Route path="/login" element={<IsUserRedirect />}>
+							<Route index element={<Login />} />
+						</Route>
+					</Route>
+
+					<Route path="*" element={<NotFound />} />
+				</Routes>
 			</Suspense>
 		</SpotlightProvider>
 	)
