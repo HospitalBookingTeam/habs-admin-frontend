@@ -295,3 +295,5 @@ const PatientManage = () => {
 }
 
 export default PatientManage
+
+// TO-DO: add responsive
