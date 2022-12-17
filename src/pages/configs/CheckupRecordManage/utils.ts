@@ -62,7 +62,7 @@ export const statusToExludeListDefaultValues = statusToExludeList.map(
 export const statusToIncludeList = Object.keys(CheckupRecordStatus)
 	.filter(
 		(val) =>
-			!statusToExludeListDefaultValues.includes(val as string) &&
+			// !statusToExludeListDefaultValues.includes(val as string) &&
 			!isNaN(Number(val))
 	)
 	.map((value) => ({

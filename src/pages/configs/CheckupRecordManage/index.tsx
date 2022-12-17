@@ -169,7 +169,7 @@ const PatientManage = () => {
 						/>
 					</Box>
 					<CustomMultiSelect
-						data={statusToExludeList}
+						data={statusToIncludeList}
 						value={statusToExclude}
 						onChange={setStatusToExclude}
 						label="Tình trạng không lọc"
