@@ -33,7 +33,7 @@ import {
 } from '@/store/record/api'
 import { CheckupRecord } from '@/entities/record'
 import { translateCheckupRecordStatus } from '@/utils/enums'
-import { formatDate } from '@/utils/formats'
+import { formatDate, formatUTCDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
 
 const useStyles = createStyles((theme) => ({}))
@@ -65,10 +65,10 @@ const PatientManage = () => {
 			statusToExclude: statusToExclude?.map((item) => Number(item)),
 			statusToInclude: statusToInclude?.map((item) => Number(item)),
 			from: dateRange[0]
-				? formatDate(dateRange[0].toString(), 'DD-MM-YYYY')
+				? formatUTCDate(dateRange[0].toString(), true)
 				: undefined,
 			to: dateRange[1]
-				? formatDate(dateRange[1].toString(), 'DD-MM-YYYY')
+				? formatUTCDate(dateRange[1].toString(), false, true)
 				: undefined,
 			roomIds: roomsFilter?.map((item) => Number(item)) ?? undefined,
 		},
@@ -120,7 +120,7 @@ const PatientManage = () => {
 				<Text align="center">{row.isReExam ? 'Có' : 'Không'}</Text>
 			</td>
 			<td>
-				<Text>{formatDate(row.date)}</Text>
+				<Text>{row?.date ? formatDate(row.date) : '---'}</Text>
 			</td>
 			<td>
 				<ActionIcon
