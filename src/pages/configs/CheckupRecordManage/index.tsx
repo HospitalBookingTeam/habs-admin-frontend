@@ -114,7 +114,15 @@ const PatientManage = () => {
 			</td>
 			<td>{row.doctorName}</td>
 			<td>
-				<Text>{translateCheckupRecordStatus(row.status)}</Text>
+				<Text
+					sx={{
+						textOverflow: 'ellipsis',
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+					}}
+				>
+					{translateCheckupRecordStatus(row.status)}
+				</Text>
 			</td>
 			<td>
 				<Text align="center">{row.isReExam ? 'Có' : 'Không'}</Text>
@@ -187,9 +195,9 @@ const PatientManage = () => {
 							sorted={sortBy === 'numericalOrder'}
 							reversed={reverseSortDirection}
 							onSort={() => setSorting('numericalOrder')}
-							width={170}
+							width={100}
 						>
-							Số khám bệnh
+							SKB
 						</Th>
 						<Th
 							sorted={sortBy === 'patientName'}
@@ -209,6 +217,7 @@ const PatientManage = () => {
 							sorted={sortBy === 'status'}
 							reversed={reverseSortDirection}
 							onSort={() => setSorting('status')}
+							width={170}
 						>
 							Tình trạng
 						</Th>
@@ -216,6 +225,7 @@ const PatientManage = () => {
 							sorted={sortBy === 'isReExam'}
 							reversed={reverseSortDirection}
 							onSort={() => setSorting('isReExam')}
+							width={130}
 						>
 							Tái khám
 						</Th>
@@ -223,6 +233,7 @@ const PatientManage = () => {
 							sorted={sortBy === 'date'}
 							reversed={reverseSortDirection}
 							onSort={() => setSorting('date')}
+							width={200}
 						>
 							Thời gian
 						</Th>
@@ -268,9 +279,21 @@ const PatientManage = () => {
 						dropdownPosition="top"
 					/>
 				</Box>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: 0,
+						transform: 'translateY(-50%)',
+					}}
+				>
+					<Text size="sm">{data?.totalItem ?? 0} kết quả</Text>
+				</Box>
 			</Group>
 		</ScrollArea>
 	)
 }
 
 export default PatientManage
+
+// TO-DO: add responsive
