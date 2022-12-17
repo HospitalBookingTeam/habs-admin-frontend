@@ -120,7 +120,7 @@ const PatientManage = () => {
 				<Text align="center">{row.isReExam ? 'Có' : 'Không'}</Text>
 			</td>
 			<td>
-				<Text>{formatDate(row.date)}</Text>
+				<Text>{row?.date ? formatDate(row.date) : '---'}</Text>
 			</td>
 			<td>
 				<ActionIcon
