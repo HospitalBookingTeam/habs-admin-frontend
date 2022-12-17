@@ -32,7 +32,7 @@ import {
 } from '@/store/record/api'
 import { TestRecord } from '@/entities/record'
 import { translateCheckupRecordStatus } from '@/utils/enums'
-import { formatDate } from '@/utils/formats'
+import { formatDate, formatUTCDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
 
 const TestRecordManage = () => {
@@ -62,10 +62,10 @@ const TestRecordManage = () => {
 			statusToExclude: statusToExclude?.map((item) => Number(item)),
 			statusToInclude: statusToInclude?.map((item) => Number(item)),
 			from: dateRange[0]
-				? formatDate(dateRange[0].toString(), 'DD-MM-YYYY')
+				? formatUTCDate(dateRange[0].toString(), true)
 				: undefined,
 			to: dateRange[1]
-				? formatDate(dateRange[1].toString(), 'DD-MM-YYYY')
+				? formatUTCDate(dateRange[1].toString(), false, true)
 				: undefined,
 			roomIds: roomsFilter?.map((item) => Number(item)) ?? undefined,
 		},

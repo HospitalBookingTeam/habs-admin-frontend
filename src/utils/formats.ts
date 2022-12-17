@@ -1,8 +1,21 @@
 import { MedicineDetail } from '@/entities/medicine'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 export const formatDate = (date: string, format = 'DD/MM/YYYY, HH:mm:ss') => {
 	return dayjs(date).format(format)
+}
+
+export const formatUTCDate = (
+	date: string,
+	startOfTime = false,
+	endOfTime = false
+) => {
+	const _date = dayjs.utc(date)
+	if (startOfTime) return _date.startOf('day').format()
+	if (endOfTime) return _date.endOf('day').format()
+	return dayjs.utc(date).format()
 }
 
 export const formatCurrency = (amount: number | string) => {
