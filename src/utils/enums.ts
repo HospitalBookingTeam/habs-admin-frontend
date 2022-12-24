@@ -40,11 +40,11 @@ export const CHECKUP_TRANSLATION: {
 } = {
 	CHO_TAI_KHAM: 'Chờ tái khám',
 	DA_DAT_LICH: 'Đã đặt lịch',
-	DA_THANH_TOAN: 'Chờ khám',
+	DA_THANH_TOAN: 'Đã thanh toán',
 	CHECKED_IN: 'Đã checkin',
 	DANG_KHAM: 'Đang khám',
 	CHO_THANH_TOAN_XN: 'Chờ thanh toán phí xét nghiệm',
-	CHECKED_IN_SAU_XN: 'Đã có KQXN',
+	CHECKED_IN_SAU_XN: 'Đã checkin sau xét nghiệm',
 	CHO_KET_QUA_XN: 'Chờ KQXN',
 	DA_CO_KET_QUA_XN: 'Đã có KQXN',
 	KET_THUC: 'Kết thúc',
@@ -53,6 +53,7 @@ export const CHECKUP_TRANSLATION: {
 	DA_HUY: 'Đã hủy',
 	DA_XOA: 'Đã xóa',
 }
+
 export const CHECKUP_TRANSLATION_RE_EXAM: {
 	[key in keyof typeof CheckupRecordStatus]: string
 } = {
@@ -62,7 +63,7 @@ export const CHECKUP_TRANSLATION_RE_EXAM: {
 	CHECKED_IN: 'Đã checkin',
 	DANG_KHAM: 'Đang khám',
 	CHO_THANH_TOAN_XN: 'Chờ thanh toán phí xét nghiệm',
-	CHECKED_IN_SAU_XN: 'Đã có KQXN',
+	CHECKED_IN_SAU_XN: 'Đã checkin sau xét nghiệm',
 	CHO_KET_QUA_XN: 'Chờ KQXN',
 	DA_CO_KET_QUA_XN: 'Đã có KQXN (tái khám)',
 	KET_THUC: 'Kết thúc',
@@ -101,7 +102,7 @@ export const TEST_RECORD_TRANSLATION: {
 } = {
 	CHUA_DAT_LICH: 'Chưa đặt lịch',
 	DA_DAT_LICH: 'Đã đặt lịch',
-	DA_THANH_TOAN: 'Chờ xét nghiệm',
+	DA_THANH_TOAN: 'Đã thanh toán',
 	CHECKED_IN: 'Đã checkin',
 	DANG_TIEN_HANH: 'Đang xét nghiệm',
 	CHO_KET_QUA: 'Chờ kết quả',
