@@ -9,12 +9,12 @@ import {
 	Box,
 	Text,
 	ActionIcon,
+	useMantineTheme,
 } from '@mantine/core'
 import { pageSize } from './items'
 import {
 	formatRoomOptions,
 	sortData,
-	statusToExludeList,
 	statusToExludeListDefaultValues,
 	statusToIncludeList,
 } from './utils'
@@ -36,6 +36,7 @@ import { formatDate, formatUTCDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
 
 const TestRecordManage = () => {
+	const theme = useMantineTheme()
 	const [search, setSearch] = useDebouncedState('', 200)
 	const [sortedData, setSortedData] = useState<TestRecord[] | null>(null)
 	const [sortBy, setSortBy] = useState<keyof TestRecord | null>(null)
@@ -93,8 +94,13 @@ const TestRecordManage = () => {
 		}
 	}, [isSuccess, data])
 
-	const rows = sortedData?.map((row) => (
-		<tr key={row.id}>
+	const rows = sortedData?.map((row, index) => (
+		<tr
+			key={row.id}
+			style={{
+				background: index % 2 === 0 ? 'transparent' : theme.colors.gray[1],
+			}}
+		>
 			<td>
 				<Text align="center">{row.numericalOrder}</Text>
 			</td>

@@ -16,17 +16,19 @@ const MedicationList = ({ data }: { data?: Prescription }) => {
 					label="Thời gian"
 					content={data?.timeCreated ? formatDate(data.timeCreated) : '---'}
 				/>
-				<Accordion
-					variant="separated"
-					chevronPosition="left"
-					radius="sm"
-					multiple={true}
-				>
-					{data?.details?.map((item, index) => (
-						<MedicineDetailRow key={item.id} item={item} index={index} />
-					))}
-				</Accordion>
-				<RowWithLabel label="Lưu ý" content={data?.note} />
+				{!!data?.details?.length && (
+					<Accordion
+						variant="separated"
+						chevronPosition="left"
+						radius="sm"
+						multiple={true}
+					>
+						{data?.details?.map((item, index) => (
+							<MedicineDetailRow key={item.id} item={item} index={index} />
+						))}
+					</Accordion>
+				)}
+				<RowWithLabel label="Lưu ý" content={data?.note} isOdd />
 			</Stack>
 		</Stack>
 	)
