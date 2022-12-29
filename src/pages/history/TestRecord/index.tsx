@@ -1,5 +1,3 @@
-import BackButton from '@/components/Button/BackButton'
-import { Badge } from '@mantine/core'
 import { Stack, Box, Paper, Group, Divider, Title } from '@mantine/core'
 
 import { useParams } from 'react-router-dom'
@@ -19,19 +17,6 @@ const FinishQueueDetail = () => {
 
 	return (
 		<Stack align={'start'}>
-			<Stack
-				sx={{ flexDirection: 'row', width: '100%' }}
-				align="center"
-				justify={'space-between'}
-				mb="sm"
-				spacing={40}
-			>
-				<BackButton route="/?tabs=test_record" />
-
-				<Badge size="xl" radius="md">
-					Kết quả xét nghiệm
-				</Badge>
-			</Stack>
 			<Box sx={{ width: '100%' }}>
 				<Paper p="md">
 					<Stack>

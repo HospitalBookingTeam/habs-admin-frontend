@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import BackButton from '@/components/Button/BackButton'
 import TestRecordList from '@/components/Record/TestRecordList'
 import { useGetCheckupRecordByIdQuery } from '@/store/record/api'
 import { formatDate } from '@/utils/formats'
-import { Paper, Stack, Divider, Text, Badge, Tabs } from '@mantine/core'
+import { Paper, Stack, Divider, Text, Tabs } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 import PatientInfo from './PatientInfo'
 import HistoryRecord from './HistoryRecord'
@@ -21,19 +20,6 @@ const RecordHistory = () => {
 
 	return (
 		<Stack>
-			<Stack
-				sx={{ flexDirection: 'row', width: '100%' }}
-				align="center"
-				justify={'space-between'}
-				mb="sm"
-				spacing={40}
-			>
-				<BackButton route="/?tabs=checkup_record" />
-
-				<Badge size="xl" radius="md">
-					LỊCH SỬ KHÁM BỆNH
-				</Badge>
-			</Stack>
 			<Paper p="md">
 				<Tabs value={activeTab} onTabChange={setActiveTab}>
 					<Tabs.List grow>
@@ -44,7 +30,7 @@ const RecordHistory = () => {
 						<Stack>
 							<Text>
 								Thời gian:{' '}
-								<Text span color="green">
+								<Text span color="green" weight={500}>
 									{recordData?.date ? formatDate(recordData.date) : '---'}
 								</Text>
 							</Text>

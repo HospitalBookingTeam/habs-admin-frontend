@@ -14,7 +14,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 					label="Tình trạng"
 					content={data?.isReExam ? 'Tái khám' : 'Khám thường'}
 				/>
-				<RowWithLabel label="Khoa" content={data?.departmentName} />
+				<RowWithLabel label="Khoa" content={data?.departmentName} isOdd />
 				<RowWithLabel label="Bác sĩ" content={data?.doctorName} />
 
 				<Grid>
@@ -23,6 +23,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Nhịp tim (BPM)"
 							content={data?.pulse?.toString() ?? '---'}
+							isOdd
 						/>
 					</Grid.Col>
 					<Grid.Col span={3}>
@@ -30,6 +31,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Huyết áp (mmHg)"
 							content={data?.bloodPressure?.toString() ?? '---'}
+							isOdd
 						/>
 					</Grid.Col>
 					<Grid.Col span={3}>
@@ -37,6 +39,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Nhiệt độ (°C)"
 							content={data?.temperature?.toString() ?? '---'}
+							isOdd
 						/>
 					</Grid.Col>
 				</Grid>
@@ -49,6 +52,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 					labelSpan={3}
 					label="Lời khuyên bác sĩ"
 					content={data?.doctorAdvice?.toString() ?? '---'}
+					isOdd
 				/>
 			</Stack>
 		</Stack>

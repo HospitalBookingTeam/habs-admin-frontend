@@ -18,12 +18,13 @@ const LayoutAppShell = ({ children }: LayoutAppShellProps) => {
 						: theme.colors.gray[2],
 			}}
 		>
-			<Stack>
-				<SimpleHeader />
-				<Container size="xl" sx={{ width: '100%' }}>
-					{children}
-				</Container>
-			</Stack>
+			<SimpleHeader />
+			<Container
+				size="xl"
+				sx={{ width: '100%', marginTop: 60, paddingBottom: 30 }}
+			>
+				{children}
+			</Container>
 		</Box>
 	)
 }

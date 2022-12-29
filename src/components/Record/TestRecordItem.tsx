@@ -32,15 +32,21 @@ const TestRecordItem = ({
 					Xem chi tiết
 				</Button>
 			</Group>
-			<RowWithLabel label="Bác sĩ xét nghiệm" content={data?.doctorName} />
+			<RowWithLabel label="Tên xét nghiệm" content={data?.operationName} />
+			<RowWithLabel
+				label="Bác sĩ xét nghiệm"
+				content={data?.doctorName}
+				isOdd
+			/>
 
 			<RowWithLabel
 				label="Thời gian"
 				content={data?.date ? formatDate(data.date) : '---'}
 			/>
 			<RowWithLabel
-				label="Chẩn đoán"
+				label="Kết quả tổng quát"
 				content={data?.resultDescription ?? '---'}
+				isOdd
 			/>
 
 			{!!data?.resultFileLink && (
