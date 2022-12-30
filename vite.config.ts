@@ -7,4 +7,7 @@ export default defineConfig({
 		alias: [{ find: '@', replacement: '/src' }],
 	},
 	plugins: [react()],
+	esbuild: {
+		logOverride: { 'this-is-undefined-in-esm': 'silent' },
+	},
 })

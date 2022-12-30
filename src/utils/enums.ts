@@ -4,6 +4,7 @@ export enum CONFIG_TYPES {
 	SUPER,
 	CHECKUP_RECORD,
 	TEST_RECORD,
+	DEMO_SCRIPT,
 }
 
 export const convertConfigEnumValueToKey = (value: number) => {
