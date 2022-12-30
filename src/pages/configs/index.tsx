@@ -7,6 +7,7 @@ const HospitalConfig = lazy(() => import('./HospitalConfig'))
 const DevConfig = lazy(() => import('./DevConfig'))
 const CheckupRecordManage = lazy(() => import('./CheckupRecordManage'))
 const TestRecordManage = lazy(() => import('./TestRecordManage'))
+const DemoScript = lazy(() => import('./Demo'))
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -42,6 +43,12 @@ const tabs = [
 		label: 'Quản lí hồ sơ xét nghiệm',
 		type: CONFIG_TYPES.TEST_RECORD,
 		panel: <TestRecordManage />,
+	},
+	{
+		key: 'demo_script',
+		label: 'Demo Script',
+		type: CONFIG_TYPES.DEMO_SCRIPT,
+		panel: <DemoScript />,
 	},
 ]
 

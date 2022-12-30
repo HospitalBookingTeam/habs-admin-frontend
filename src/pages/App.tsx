@@ -15,7 +15,7 @@ import LayoutAppShell from '@/components/Layout'
 import { useGetConfigsQuery } from '@/store/configs/api'
 import { SpotlightAction, SpotlightProvider } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons'
-import { CONFIG_TYPES, convertConfigEnumValueToKey } from '@/utils/enums'
+import { convertConfigEnumValueToKey } from '@/utils/enums'
 
 const Login = lazy(() => import('@/pages/auth'))
 
