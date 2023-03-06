@@ -1,4 +1,6 @@
 import {
+	useChangeNowMutation,
+	useGetNowQuery,
 	useScript1Mutation,
 	useScript2Mutation,
 	useScript3Mutation,
@@ -12,20 +14,58 @@ import {
 import {
 	Stack,
 	NumberInput,
-	Center,
 	Button,
 	Modal,
 	Group,
 	Text,
-	Divider,
+	Paper,
+	Container,
 } from '@mantine/core'
 import { UseMutation } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import useGlobalStyles from '@/utils/useGlobalStyles'
-import { useState } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useForm } from '@mantine/form'
 import { showNotification } from '@mantine/notifications'
+import DateTimePicker from '@/components/TimePicker'
+import dayjs from 'dayjs'
+import { convertTimeToLocal, formatDate } from '@/utils/formats'
 
 const DemoScript = () => {
+	const [time, setTime] = useState<Date | null>(new Date())
+	const { data: now, isSuccess: isNowSuccess } = useGetNowQuery()
+	const [mutateNow, { isLoading: isLoadingNow }] = useChangeNowMutation()
+
+	console.log(
+		'now',
+		time,
+		formatDate(time?.toString() ?? '', 'YYYY-MM-DDTHH:mm:ss+00:00')
+	)
+	useEffect(() => {
+		if (isNowSuccess) {
+			setTime(dayjs(now).toDate())
+		}
+	}, [isNowSuccess])
+
+	const updateNow = async () => {
+		if (!time) return
+		await mutateNow(convertTimeToLocal(time.toString()))
+			.unwrap()
+			.then(() => {
+				showNotification({
+					title: 'Thành công',
+					message: <></>,
+				})
+			})
+			.catch((error) => {
+				showNotification({
+					title: 'Không thành công',
+					message: <></>,
+					color: 'red',
+					autoClose: 5000,
+				})
+			})
+	}
+
 	const scripts: (ScriptActionProps & { id: string })[] = [
 		{
 			id: '1',
@@ -85,15 +125,33 @@ const DemoScript = () => {
 	]
 
 	return (
-		<Stack>
-			<Center p="xl">
-				<Stack>
-					{scripts.map((item) => (
-						<ScriptAction {...item} key={item.id} />
-					))}
-				</Stack>
-			</Center>
-		</Stack>
+		<Container size="xl">
+			<Stack py="lg">
+				<Paper p="md" sx={{ background: 'white' }}>
+					<Group align="end">
+						<DateTimePicker
+							locale="vi"
+							label="Script 0: Thay đổi thời gian"
+							value={time}
+							onChange={setTime}
+							sx={{ flex: 1, maxWidth: 300 }}
+						/>
+						<Stack sx={{ flex: 1 }} align="end">
+							<Button
+								onClick={updateNow}
+								loading={isLoadingNow}
+								disabled={!time}
+							>
+								Cập nhật
+							</Button>
+						</Stack>
+					</Group>
+				</Paper>
+				{scripts.map((item) => (
+					<ScriptAction {...item} key={item.id} />
+				))}
+			</Stack>
+		</Container>
 	)
 }
 
@@ -137,22 +195,22 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 			})
 	}
 	return (
-		<>
-			<Group position="apart" spacing={20}>
-				<Stack>
-					<Text weight={500}>{label}</Text>
-					<Text>{title}</Text>
-				</Stack>
-				<Button
-					onClick={() => {
-						setOpenModal(true)
-					}}
-				>
-					Thực hiện
-				</Button>
-			</Group>
-			<Divider />
-
+		<Fragment>
+			<Paper p="md" sx={{ backgroundColor: 'white' }}>
+				<Group position="apart" spacing={'xl'}>
+					<Stack>
+						<Text weight={500}>{label}</Text>
+						<Text>{title}</Text>
+					</Stack>
+					<Button
+						onClick={() => {
+							setOpenModal(true)
+						}}
+					>
+						Thực hiện
+					</Button>
+				</Group>
+			</Paper>
 			<Modal
 				opened={openModal}
 				centered={true}
@@ -175,7 +233,7 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 					</Button>
 				</form>
 			</Modal>
-		</>
+		</Fragment>
 	)
 }
 export default DemoScript

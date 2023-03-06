@@ -1,4 +1,5 @@
 import { AuthForm } from '@/entities/auth'
+import { persistor } from '@/store'
 import { useLoginMutation } from '@/store/auth/api'
 import { createStyles, Image, Text } from '@mantine/core'
 import { Stack } from '@mantine/core'
@@ -57,6 +58,7 @@ const Login = () => {
 	})
 
 	const onSubmit = async (values: AuthForm) => {
+		persistor.persist()
 		await login({ ...values })
 			.unwrap()
 			.then(() => navigate('/'))

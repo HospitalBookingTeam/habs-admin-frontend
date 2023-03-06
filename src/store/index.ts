@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/es/storage'
 import authReducer from './auth/slice'
+import configReducer from './configs/slice'
 import {
 	persistStore,
 	persistReducer,
@@ -18,12 +19,13 @@ import { rtkQueryErrorLogger } from './middleware/apiListener'
 const persistConfig = {
 	key: 'root',
 	storage,
-	whitelist: ['auth'],
+	whitelist: ['auth', 'config'],
 }
 
 const rootReducer = combineReducers({
 	[api.reducerPath]: api.reducer,
 	auth: authReducer,
+	config: configReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

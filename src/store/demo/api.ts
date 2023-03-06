@@ -119,6 +119,25 @@ export const configApi = api.injectEndpoints({
 				maxRetries: 1,
 			},
 		}),
+		getNow: build.query<string, void>({
+			query: () => ({
+				url: 'test/now',
+				responseHandler: (response) => response.text(),
+			}),
+		}),
+		changeNow: build.mutation<void, string>({
+			query: (now) => ({
+				url: 'test/now',
+				method: 'POST',
+				body: {
+					now,
+				},
+				// responseHandler: (response) => response.text(),
+			}),
+			extraOptions: {
+				maxRetries: 1,
+			},
+		}),
 	}),
 })
 
@@ -132,6 +151,8 @@ export const {
 	useScript7Mutation,
 	useScript8Mutation,
 	useScript9Mutation,
+	useGetNowQuery,
+	useChangeNowMutation,
 } = configApi
 
 export const {

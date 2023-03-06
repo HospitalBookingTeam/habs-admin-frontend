@@ -14,23 +14,17 @@ import { useSpotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Clock from '../Clock'
 
 const useStyles = createStyles((theme) => ({
 	header: {
-		backgroundColor: theme.fn.variant({
-			variant: 'filled',
-			color: theme.primaryColor,
-		}).background,
-		borderBottom: `1px solid ${
-			theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-				.background
-		}`,
 		marginBottom: 0,
 		position: 'fixed',
 		top: 0,
 		width: '100%',
-		height: 50,
+		height: 40,
 		zIndex: 999,
+		borderBottom: `1px solid ${theme.colors.gray[2]}`,
 	},
 
 	mainSection: {
@@ -96,11 +90,12 @@ const SimpleHeader = () => {
 	return (
 		<div className={classes.header}>
 			<Container size="xl" className={classes.mainSection}>
-				<Group position="apart" align="center" sx={{ height: '100%' }}>
-					<UnstyledButton onClick={handleHomeClick}>
-						<Text color="white">Admin</Text>
-					</UnstyledButton>
-					{!isViewRecordsHistory && !isViewTestsHistory && (
+				<Group
+					position="right"
+					align="center"
+					sx={{ height: '100%', backgroundColor: 'white' }}
+				>
+					{/* {!isViewRecordsHistory && !isViewTestsHistory && (
 						<UnstyledButton
 							className={classes.searchInput}
 							onClick={() => spotlight.openSpotlight()}
@@ -112,18 +107,10 @@ const SimpleHeader = () => {
 								</Text>
 							</Group>
 						</UnstyledButton>
-					)}
-					{isViewRecordsHistory && <Badge size="lg">LỊCH SỬ KHÁM BỆNH</Badge>}
-					{isViewTestsHistory && <Badge size="lg">KẾT QUẢ XÉT NGHIỆM</Badge>}
-					<Button
-						variant="white"
-						onClick={() => {
-							dispatch(logout())
-						}}
-						size="xs"
-					>
-						Đăng xuất
-					</Button>
+					)} */}
+					{/* {isViewRecordsHistory && <Badge size="lg">LỊCH SỬ KHÁM BỆNH</Badge>}
+					{isViewTestsHistory && <Badge size="lg">KẾT QUẢ XÉT NGHIỆM</Badge>} */}
+					<Clock />
 				</Group>
 			</Container>
 		</div>

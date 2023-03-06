@@ -18,7 +18,7 @@ const FinishQueueDetail = () => {
 	return (
 		<Stack align={'start'}>
 			<Box sx={{ width: '100%' }}>
-				<Paper p="md">
+				<Paper p="md" sx={{ backgroundColor: 'white' }}>
 					<Stack>
 						<Group mt="sm">
 							<Title order={3} size="h4">

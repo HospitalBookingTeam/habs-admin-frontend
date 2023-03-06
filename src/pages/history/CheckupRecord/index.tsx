@@ -20,7 +20,7 @@ const RecordHistory = () => {
 
 	return (
 		<Stack>
-			<Paper p="md">
+			<Paper p="md" sx={{ backgroundColor: 'white' }}>
 				<Tabs value={activeTab} onTabChange={setActiveTab}>
 					<Tabs.List grow>
 						<Tabs.Tab value="record">Thông tin chi tiết</Tabs.Tab>

@@ -2,27 +2,39 @@ import { useState, useEffect } from 'react'
 import {
 	createStyles,
 	Navbar,
-	Group,
-	Code,
+	Tooltip,
+	UnstyledButton,
 	Text,
-	Button,
 	Stack,
+	useMantineTheme,
+	MediaQuery,
+	Group,
+	Box,
+	Divider,
 } from '@mantine/core'
-import { IconList, IconZoomCheck, IconLogout, IconPackage } from '@tabler/icons'
+import {
+	IconList,
+	IconZoomCheck,
+	IconLogout,
+	IconPackage,
+	TablerIcon,
+	IconTimeline,
+} from '@tabler/icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout } from '@/store/auth/slice'
 import { selectAuth } from '@/store/auth/selectors'
+import { useMediaQuery, useViewportSize } from '@mantine/hooks'
+import { persistor } from '@/store'
+import { clearConfig } from '@/store/configs/slice'
 
 const useStyles = createStyles((theme, _params, getRef) => {
 	const icon: string = getRef('icon')
 	return {
 		navbar: {
-			backgroundColor: theme.fn.variant({
-				variant: 'filled',
-				color: theme.primaryColor,
-			}).background,
+			position: 'fixed',
 			top: 0,
+			zIndex: 9999,
 		},
 		title: {
 			textTransform: 'uppercase',
@@ -30,34 +42,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
 			color: theme.white,
 		},
 
-		version: {
-			backgroundColor: theme.fn.lighten(
-				theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-					.background,
-				0.1
-			),
-			color: theme.white,
-			fontWeight: 700,
-		},
-
-		header: {
-			paddingBottom: theme.spacing.md,
-			marginBottom: theme.spacing.md * 1.5,
-			borderBottom: `1px solid ${theme.fn.lighten(
-				theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-					.background,
-				0.1
-			)}`,
-		},
-
 		footer: {
-			paddingTop: theme.spacing.md,
-			marginTop: theme.spacing.md,
-			borderTop: `1px solid ${theme.fn.lighten(
-				theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-					.background,
-				0.1
-			)}`,
+			paddingTop: theme.spacing.xs,
+			marginTop: theme.spacing.xs,
+			borderTop: `1px solid ${theme.colors.gray[4]}`,
 		},
 
 		link: {
@@ -66,34 +54,25 @@ const useStyles = createStyles((theme, _params, getRef) => {
 			alignItems: 'center',
 			textDecoration: 'none',
 			fontSize: theme.fontSizes.sm,
-			color: theme.white,
+			color: theme.colors.gray[7],
 			padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
 			borderRadius: theme.radius.sm,
 			fontWeight: 500,
+			width: '100%',
 
 			'&:hover': {
-				backgroundColor: theme.fn.lighten(
-					theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-						.background,
-					0.1
-				),
+				backgroundColor: theme.colors.gray[1],
 			},
-		},
-
-		linkIcon: {
-			ref: icon,
-			color: theme.white,
-			opacity: 0.75,
-			marginRight: theme.spacing.sm,
+			[`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+				span: {
+					fontSize: theme.fontSizes.xs,
+				},
+			},
 		},
 
 		linkActive: {
 			'&, &:hover': {
-				backgroundColor: theme.fn.lighten(
-					theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-						.background,
-					0.15
-				),
+				backgroundColor: theme.colors.gray[1],
 				[`& .${icon}`]: {
 					opacity: 0.9,
 				},
@@ -103,10 +82,52 @@ const useStyles = createStyles((theme, _params, getRef) => {
 })
 
 const data = [
-	{ link: '/', label: 'Hàng chờ khám', icon: IconList },
-	{ link: '/testing', label: 'Đợi kết quả', icon: IconPackage },
-	{ link: '/finished', label: 'Người bệnh đã khám', icon: IconZoomCheck },
+	{ link: '', secondLink: '/', label: 'Configurations', icon: IconPackage },
+	{ link: '/records', label: 'Danh sách khám bệnh', icon: IconList },
+	{ link: '/schedule', label: 'Lịch khám bệnh', icon: IconTimeline },
 ]
+
+interface NavbarLinkProps {
+	icon: TablerIcon
+	label: string
+	active?: boolean
+	onClick?: React.MouseEventHandler<HTMLButtonElement>
+}
+
+function NavbarLinkMobile({
+	icon: Icon,
+	label,
+	active,
+	onClick,
+}: NavbarLinkProps) {
+	const { classes, cx } = useStyles()
+	const theme = useMantineTheme()
+	const matches = useMediaQuery(`(max-width: ${theme.breakpoints.lg}px)`)
+	return (
+		<Tooltip
+			label={label}
+			position="right"
+			transitionDuration={0}
+			hidden={!matches}
+		>
+			<UnstyledButton
+				onClick={onClick}
+				className={cx(classes.link, { [classes.linkActive]: active })}
+			>
+				<Group align="center">
+					<Icon stroke={1.5} style={{ flex: 1 }} />
+
+					<MediaQuery
+						query={`(max-width: ${theme.breakpoints.lg}px)`}
+						styles={{ display: 'none' }}
+					>
+						<span>{label}</span>
+					</MediaQuery>
+				</Group>
+			</UnstyledButton>
+		</Tooltip>
+	)
+}
 
 export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 	const location = useLocation()
@@ -116,26 +137,25 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 	const dispatch = useAppDispatch()
 	const authData = useAppSelector(selectAuth)
 
+	const theme = useMantineTheme()
+	const matches = useMediaQuery(`(max-width: ${theme.breakpoints.lg}px)`)
+	const { width } = useViewportSize()
+
 	const links = data.map((item) => (
-		<a
-			className={cx(classes.link, {
-				[classes.linkActive]: item.link === active,
-			})}
-			href={item.link}
+		<NavbarLinkMobile
 			key={item.label}
 			onClick={(event) => {
 				event.preventDefault()
 				setActive(item.link)
 				navigate(item.link)
 			}}
-		>
-			<item.icon className={classes.linkIcon} stroke={1.5} />
-			<span>{item.label}</span>
-		</a>
+			icon={item.icon}
+			label={item.label}
+			active={active === item.link || active === item?.secondLink}
+		/>
 	))
 
 	useEffect(() => {
-		console.log('authData', authData)
 		if (!authData?.isAuthenticated) {
 			navigate('/login')
 		}
@@ -143,59 +163,37 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 
 	return (
 		<Navbar
-			p="md"
-			hidden={!opened}
-			width={{ sm: 200, lg: 300 }}
+			p={matches ? 'xs' : 'md'}
+			width={{ base: 75, lg: 250 }}
 			className={classes.navbar}
-			hiddenBreakpoint="sm"
+			sx={{
+				background: 'white',
+				left: `calc(max((100vw - min(1440px, ${width}px)), (min(1440px, ${width}px) - 100vw)) / 2)`,
+			}}
 		>
 			<Navbar.Section grow>
-				{/* <Text weight={500} size="sm" className={classes.title} mb="xs">
-					Bác sĩ {authData?.information?.name}
-				</Text>
-				<Stack className={classes.header}>
-					<Code className={classes.version}>
-						Phòng {authData?.information?.room?.roomNumber} -{' '}
-						{authData?.information?.room?.roomTypeName}{' '}
-						{authData?.information?.room?.departmentName}
-					</Code>
-
-					<Clock />
-				</Stack> */}
-				{links}
+				<Stack>
+					<Text size="lg" align="center" weight="bolder">
+						Admin
+					</Text>
+					<Divider />
+					<Stack spacing={'xs'}>{links}</Stack>
+				</Stack>
 			</Navbar.Section>
 
 			<Navbar.Section className={classes.footer}>
-				{/* <a
-					href="#"
-					className={classes.link}
-					onClick={(event) => event.preventDefault()}
-				>
-					<IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-					<span>Change account</span>
-				</a> */}
-
-				{/* <a
-					href="#"
-					className={classes.link}
-					onClick={(event) => {
-						event.preventDefault()
-						dispatch(logout())
-					}}
-				>
-					<span>Đăng xuất</span>
-				</a> */}
-				<Button
-					leftIcon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
-					className={classes.link}
-					fullWidth
-					variant="subtle"
+				<NavbarLinkMobile
+					icon={IconLogout}
+					label="Đăng xuất"
 					onClick={() => {
 						dispatch(logout())
+						dispatch(clearConfig())
+						persistor.pause()
+						persistor.flush().then(() => {
+							return persistor.purge()
+						})
 					}}
-				>
-					Đăng xuất
-				</Button>
+				/>
 			</Navbar.Section>
 		</Navbar>
 	)

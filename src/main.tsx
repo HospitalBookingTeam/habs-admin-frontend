@@ -21,6 +21,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 					theme={{
 						primaryColor: 'green',
 						white: '#f9f9f9',
+						components: {
+							Container: {
+								defaultProps: {
+									sizes: {
+										xs: 540,
+										sm: 720,
+										md: 960,
+										lg: 1140,
+										xl: 1440,
+									},
+								},
+							},
+						},
 					}}
 				>
 					<NotificationsProvider>

@@ -12,6 +12,7 @@ import {
 	ThemeIcon,
 	Button,
 	Transition,
+	Divider,
 } from '@mantine/core'
 import { UseFormReturnType } from '@mantine/form/lib/types'
 import { showNotification } from '@mantine/notifications'
@@ -30,6 +31,9 @@ type ConfigInputProps = {
 const useStyles = createStyles((theme) => ({
 	searched: {
 		animation: `${bounce} 2s ease-in-out`,
+	},
+	container: {
+		background: theme.colors.gray[0],
 	},
 }))
 
@@ -80,18 +84,25 @@ const ConfigInput = ({
 
 	return (
 		<Paper
-			className={cx({ [classes.searched]: isAnimate })}
+			className={cx({
+				[classes.searched]: isAnimate,
+				[classes.container]: true,
+			})}
 			withBorder={true}
 			p="sm"
 			id={id.toString()}
 			ref={ref}
+			sx={{ background: 'white' }}
 		>
 			<Stack>
-				<Group align="baseline">
-					<Text weight={500}>{name}</Text>
-					<Badge color="cyan">{id}</Badge>
-				</Group>
-				<Spoiler maxHeight={60} showLabel="Xem thêm" hideLabel="Thu gọn">
+				<Stack spacing={'xs'}>
+					<Group align="baseline">
+						<Text weight={500}>{name}</Text>
+						<Badge color="cyan">{id}</Badge>
+					</Group>
+					<Divider />
+				</Stack>
+				<Spoiler maxHeight={40} showLabel="Xem thêm" hideLabel="Thu gọn">
 					<Text size="sm" color="dimmed">
 						{description}
 					</Text>
