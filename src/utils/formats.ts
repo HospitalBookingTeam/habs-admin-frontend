@@ -3,8 +3,18 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 dayjs.extend(utc)
 
-export const formatDate = (date: string, format = 'DD/MM/YYYY, HH:mm:ss') => {
+export const formatDate = (
+	date: string | number,
+	format = 'DD/MM/YYYY, HH:mm:ss'
+) => {
 	return dayjs(date).format(format)
+}
+
+export const getLocalTimeFromUTC = (date: number | string) => {
+	return dayjs(date).utc().local().valueOf()
+}
+export const convertTimeToLocal = (date: number | string) => {
+	return dayjs(date).local().format()
 }
 
 export const formatUTCDate = (

@@ -27,7 +27,7 @@ const RowWithLabel = ({
 				borderRadius: 4,
 				width: '100%',
 				margin: 0,
-				background: theme.colors.gray[isOdd ? 1 : 0],
+				background: isOdd ? 'white' : theme.colors.gray[0],
 			}}
 		>
 			<Grid.Col span={labelSpan} px="xs" className={classes.label}>

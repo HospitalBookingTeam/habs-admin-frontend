@@ -1,10 +1,10 @@
 import { CONFIG_TYPES } from '@/utils/enums'
-import { Paper, Tabs, createStyles } from '@mantine/core'
+import { Paper, Tabs, createStyles, TextInput } from '@mantine/core'
 import { lazy, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-const HospitalConfig = lazy(() => import('./HospitalConfig'))
-const DevConfig = lazy(() => import('./DevConfig'))
+const CheckupRecordManage = lazy(() => import('./CheckupRecordManage'))
+const TestRecordManage = lazy(() => import('./TestRecordManage'))
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -18,16 +18,16 @@ const useStyles = createStyles((theme) => ({
 
 const tabs = [
 	{
-		key: 'hospital',
-		label: 'Bệnh viện',
-		type: CONFIG_TYPES.HOSPITAL,
-		panel: <HospitalConfig />,
+		key: 'checkup_record',
+		label: 'Danh sách bệnh án',
+		type: CONFIG_TYPES.CHECKUP_RECORD,
+		panel: <CheckupRecordManage />,
 	},
 	{
-		key: 'dev',
-		label: 'Dev',
-		type: CONFIG_TYPES.DEV,
-		panel: <DevConfig />,
+		key: 'test_record',
+		label: 'Danh sách xét nghiệm',
+		type: CONFIG_TYPES.TEST_RECORD,
+		panel: <TestRecordManage />,
 	},
 ]
 
@@ -63,8 +63,8 @@ const ConfigContainer = () => {
 		<Paper
 			p="md"
 			shadow="sm"
-			className={classes.container}
 			sx={{ backgroundColor: 'white' }}
+			className={classes.container}
 		>
 			<Tabs
 				classNames={{ root: classes.tabs }}

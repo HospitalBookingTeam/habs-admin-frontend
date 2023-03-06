@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import {
 	Routes,
 	Route,
@@ -8,14 +8,15 @@ import {
 	useSearchParams,
 	useLocation,
 } from 'react-router-dom'
-import { Box, LoadingOverlay } from '@mantine/core'
+import { LoadingOverlay } from '@mantine/core'
 import { selectIsAuthenticated } from '@/store/auth/selectors'
 import { useAppSelector } from '@/store/hooks'
 import LayoutAppShell from '@/components/Layout'
-import { useGetConfigsQuery } from '@/store/configs/api'
+import { useGetConfigsQuery, useLazyGetTimeQuery } from '@/store/configs/api'
 import { SpotlightAction, SpotlightProvider } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons'
 import { convertConfigEnumValueToKey } from '@/utils/enums'
+import { selectTime } from '@/store/configs/selectors'
 
 const Login = lazy(() => import('@/pages/auth'))
 
@@ -26,7 +27,23 @@ const NotFound = lazy(() => import('@/components/NotFound/NotFoundPage'))
 const CheckupRecordHistory = lazy(() => import('@/pages/history/CheckupRecord'))
 const TestRecordHistory = lazy(() => import('@/pages/history/TestRecord'))
 
+const ManageRecords = lazy(() => import('@/pages/records'))
+const DemoScript = lazy(() => import('@/pages/demo'))
+const ImportSchedule = lazy(() => import('@/pages/schedule'))
+
 const App = () => {
+	const isAuthenticated = useAppSelector(selectIsAuthenticated)
+	const configTime = useAppSelector(selectTime)
+	const [triggerTimeConfig] = useLazyGetTimeQuery()
+	useEffect(() => {
+		const getTime = async () => {
+			await triggerTimeConfig()
+		}
+		if (isAuthenticated && configTime === null) {
+			getTime()
+		}
+	}, [isAuthenticated, configTime])
+
 	const { data: configList } = useGetConfigsQuery({})
 	const [, setSearchParams] = useSearchParams()
 	const navigate = useNavigate()
@@ -69,17 +86,19 @@ const App = () => {
 							<Route index element={<ConfigContainer />} />
 
 							<Route path="records" element={<Outlet />}>
+								<Route index element={<ManageRecords />} />
 								<Route path=":id" element={<CheckupRecordHistory />} />
 							</Route>
 							<Route path="tests" element={<Outlet />}>
 								<Route path=":id" element={<TestRecordHistory />} />
 							</Route>
-						</Route>
-
-						<Route path="/login" element={<IsUserRedirect />}>
-							<Route index element={<Login />} />
+							<Route path="schedule" element={<ImportSchedule />} />
 						</Route>
 					</Route>
+					<Route path="/login" element={<IsUserRedirect />}>
+						<Route index element={<Login />} />
+					</Route>
+					<Route path="/demo" element={<DemoScript />}></Route>
 
 					<Route path="*" element={<NotFound />} />
 				</Routes>
