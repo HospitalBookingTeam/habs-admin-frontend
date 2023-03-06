@@ -19,6 +19,7 @@ import {
 	IconPackage,
 	TablerIcon,
 	IconTimeline,
+	IconHome,
 } from '@tabler/icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -82,7 +83,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
 })
 
 const data = [
-	{ link: '', secondLink: '/', label: 'Configurations', icon: IconPackage },
+	{ link: '', secondLink: '/', label: 'Dashboard', icon: IconHome },
+	{ link: '/configs', label: 'Configurations', icon: IconPackage },
 	{ link: '/records', label: 'Danh sách khám bệnh', icon: IconList },
 	{ link: '/schedule', label: 'Lịch khám bệnh', icon: IconTimeline },
 ]

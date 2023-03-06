@@ -30,6 +30,7 @@ const TestRecordHistory = lazy(() => import('@/pages/history/TestRecord'))
 const ManageRecords = lazy(() => import('@/pages/records'))
 const DemoScript = lazy(() => import('@/pages/demo'))
 const ImportSchedule = lazy(() => import('@/pages/schedule'))
+const Statistics = lazy(() => import('@/pages/statistic'))
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated)
@@ -83,7 +84,7 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<Outlet />}>
 						<Route element={<RequireAuth />}>
-							<Route index element={<ConfigContainer />} />
+							<Route index element={<Statistics />} />
 
 							<Route path="records" element={<Outlet />}>
 								<Route index element={<ManageRecords />} />
@@ -93,6 +94,7 @@ const App = () => {
 								<Route path=":id" element={<TestRecordHistory />} />
 							</Route>
 							<Route path="schedule" element={<ImportSchedule />} />
+							<Route path="configs" element={<ConfigContainer />} />
 						</Route>
 					</Route>
 					<Route path="/login" element={<IsUserRedirect />}>
