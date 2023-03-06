@@ -28,18 +28,13 @@ import { useForm } from '@mantine/form'
 import { showNotification } from '@mantine/notifications'
 import DateTimePicker from '@/components/TimePicker'
 import dayjs from 'dayjs'
-import { convertTimeToLocal, formatDate } from '@/utils/formats'
+import { formatDate } from '@/utils/formats'
 
 const DemoScript = () => {
 	const [time, setTime] = useState<Date | null>(new Date())
 	const { data: now, isSuccess: isNowSuccess } = useGetNowQuery()
 	const [mutateNow, { isLoading: isLoadingNow }] = useChangeNowMutation()
 
-	console.log(
-		'now',
-		time,
-		formatDate(time?.toString() ?? '', 'YYYY-MM-DDTHH:mm:ss+00:00')
-	)
 	useEffect(() => {
 		if (isNowSuccess) {
 			setTime(dayjs(now).toDate())
@@ -48,7 +43,7 @@ const DemoScript = () => {
 
 	const updateNow = async () => {
 		if (!time) return
-		await mutateNow(convertTimeToLocal(time.toString()))
+		await mutateNow(`${formatDate(time.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`)
 			.unwrap()
 			.then(() => {
 				showNotification({
