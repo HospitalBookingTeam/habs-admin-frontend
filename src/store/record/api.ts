@@ -7,6 +7,7 @@ import {
 } from '@/entities/record'
 import { Room } from '@/entities/room'
 import { api } from '../api'
+import { IStatistics } from '@/entities/statistics'
 
 export const recordApi = api.injectEndpoints({
 	endpoints: (build) => ({
@@ -87,6 +88,12 @@ export const recordApi = api.injectEndpoints({
 				{ type: 'Misc' as const, id: 'EXAM_ROOMS' },
 			],
 		}),
+		getStatistics: build.query<IStatistics, { from?: string; to?: string }>({
+			query: (params) => ({
+				url: `checkup-records/statistic`,
+				params,
+			}),
+		}),
 	}),
 })
 
@@ -97,6 +104,7 @@ export const {
 	useGetTestRecordByIdQuery,
 	useGetRoomListQuery,
 	useGetExamRoomListQuery,
+	useGetStatisticsQuery,
 } = recordApi
 
 export const {
