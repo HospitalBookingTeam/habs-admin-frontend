@@ -34,6 +34,9 @@ import { CheckupRecord } from '@/entities/record'
 import { translateCheckupRecordStatus } from '@/utils/enums'
 import { formatDate, formatUTCDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
+import { useAppSelector } from '@/store/hooks'
+import { selectTime } from '@/store/configs/selectors'
+import dayjs from 'dayjs'
 
 const PatientManage = () => {
 	const theme = useMantineTheme()
@@ -44,13 +47,15 @@ const PatientManage = () => {
 	const [statusToExclude, setStatusToExclude] = useState<string[]>(
 		statusToExludeListDefaultValues
 	)
+	const configTime = useAppSelector(selectTime)
+
 	const [statusToInclude, setStatusToInclude] = useState<string[] | null>(null)
 	const [totalPageSize, setTotalPageSize] = useState<string | null>(pageSize[0])
 	const [page, setPage] = useState(1)
 
 	const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-		new Date(),
-		new Date(),
+		new Date(dayjs().valueOf() + (configTime ?? 0)),
+		new Date(dayjs().valueOf() + (configTime ?? 0)),
 	])
 	const [roomsFilter, setRoomsFilter] = useState<string[] | null>(null)
 
@@ -63,10 +68,10 @@ const PatientManage = () => {
 			statusToExclude: statusToExclude?.map((item) => Number(item)),
 			statusToInclude: statusToInclude?.map((item) => Number(item)),
 			from: dateRange[0]
-				? formatUTCDate(dateRange[0].toString(), true)
+				? `${formatDate(dateRange[0].toString(), 'YYYY-MM-DDT00:00:00')}Z`
 				: undefined,
 			to: dateRange[1]
-				? formatUTCDate(dateRange[1].toString(), false, true)
+				? `${formatDate(dateRange[1].toString(), 'YYYY-MM-DDT23:59:59')}Z`
 				: undefined,
 			roomIds: roomsFilter?.map((item) => Number(item)) ?? undefined,
 		},
@@ -187,76 +192,74 @@ const PatientManage = () => {
 					/>
 				</Group>
 			</Stack>
-			<Table
-				horizontalSpacing="md"
-				verticalSpacing="xs"
-				sx={{ tableLayout: 'fixed', minWidth: 700, minHeight: 300 }}
-			>
-				<thead>
-					<tr>
-						<Th
-							sorted={sortBy === 'numericalOrder'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('numericalOrder')}
-							width={100}
-						>
-							SKB
-						</Th>
-						<Th
-							sorted={sortBy === 'patientName'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('patientName')}
-						>
-							Người bệnh
-						</Th>
-						<Th
-							sorted={sortBy === 'doctorName'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('doctorName')}
-						>
-							Bác sĩ
-						</Th>
-						<Th
-							sorted={sortBy === 'status'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('status')}
-							width={170}
-						>
-							Tình trạng
-						</Th>
-						<Th
-							sorted={sortBy === 'isReExam'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('isReExam')}
-							width={130}
-						>
-							Tái khám
-						</Th>
-						<Th
-							sorted={sortBy === 'date'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('date')}
-							width={200}
-						>
-							Thời gian
-						</Th>
-						<th style={{ width: 50 }}></th>
-					</tr>
-				</thead>
-				<tbody>
-					{rows?.length && rows?.length > 0 ? (
-						rows
-					) : (
+			<Stack sx={{ minWidth: 700, minHeight: 300 }}>
+				<Table horizontalSpacing="md" verticalSpacing="xs">
+					<thead>
 						<tr>
-							<td colSpan={6}>
-								<Center>
-									<Text align="center">Không tìm thấy dữ liệu</Text>
-								</Center>
-							</td>
+							<Th
+								sorted={sortBy === 'numericalOrder'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('numericalOrder')}
+								width={100}
+							>
+								SKB
+							</Th>
+							<Th
+								sorted={sortBy === 'patientName'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('patientName')}
+							>
+								Người bệnh
+							</Th>
+							<Th
+								sorted={sortBy === 'doctorName'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('doctorName')}
+							>
+								Bác sĩ
+							</Th>
+							<Th
+								sorted={sortBy === 'status'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('status')}
+								width={170}
+							>
+								Tình trạng
+							</Th>
+							<Th
+								sorted={sortBy === 'isReExam'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('isReExam')}
+								width={130}
+							>
+								Tái khám
+							</Th>
+							<Th
+								sorted={sortBy === 'date'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('date')}
+								width={200}
+							>
+								Thời gian
+							</Th>
+							<th style={{ width: 50 }}></th>
 						</tr>
-					)}
-				</tbody>
-			</Table>
+					</thead>
+					<tbody>
+						{rows?.length && rows?.length > 0 ? (
+							rows
+						) : (
+							<tr>
+								<td colSpan={6}>
+									<Center>
+										<Text align="center">Không tìm thấy dữ liệu</Text>
+									</Center>
+								</td>
+							</tr>
+						)}
+					</tbody>
+				</Table>
+			</Stack>
 
 			<Group
 				position="center"

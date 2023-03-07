@@ -34,6 +34,9 @@ import { TestRecord } from '@/entities/record'
 import { translateCheckupRecordStatus } from '@/utils/enums'
 import { formatDate, formatUTCDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
+import { useAppSelector } from '@/store/hooks'
+import { selectTime } from '@/store/configs/selectors'
+import dayjs from 'dayjs'
 
 const TestRecordManage = () => {
 	const theme = useMantineTheme()
@@ -48,9 +51,11 @@ const TestRecordManage = () => {
 	const [totalPageSize, setTotalPageSize] = useState<string | null>(pageSize[0])
 	const [page, setPage] = useState(1)
 
+	const configTime = useAppSelector(selectTime)
+
 	const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-		new Date(),
-		new Date(),
+		new Date(dayjs().valueOf() + (configTime ?? 0)),
+		new Date(dayjs().valueOf() + (configTime ?? 0)),
 	])
 	const [roomsFilter, setRoomsFilter] = useState<string[] | null>(null)
 
@@ -63,10 +68,10 @@ const TestRecordManage = () => {
 			statusToExclude: statusToExclude?.map((item) => Number(item)),
 			statusToInclude: statusToInclude?.map((item) => Number(item)),
 			from: dateRange[0]
-				? formatUTCDate(dateRange[0].toString(), true)
+				? `${formatDate(dateRange[0].toString(), 'YYYY-MM-DDT00:00:00')}Z`
 				: undefined,
 			to: dateRange[1]
-				? formatUTCDate(dateRange[1].toString(), false, true)
+				? `${formatDate(dateRange[1].toString(), 'YYYY-MM-DDT23:59:59')}Z`
 				: undefined,
 			roomIds: roomsFilter?.map((item) => Number(item)) ?? undefined,
 		},
