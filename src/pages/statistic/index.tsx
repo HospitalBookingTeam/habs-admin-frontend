@@ -11,31 +11,59 @@ import {
 	Stack,
 	Table,
 	Text,
+	useMantineTheme,
 } from '@mantine/core'
 
 const Statistic = () => {
-	const { data, isLoading } = useGetStatisticsQuery({})
+	const { data, isLoading } = useGetStatisticsQuery(
+		{},
+		{
+			refetchOnMountOrArgChange: true,
+			refetchOnFocus: true,
+		}
+	)
+	const { colors } = useMantineTheme()
 
 	const dataForCheckup = [
 		{
+			value: data?.bookedAndPaidCount,
+			label: 'Đã thanh toán phí khám bệnh',
+			color: 'teal',
+		},
+		{
 			value: data?.checkedInCount,
-			label: 'Số người checkin',
-			color: 'green',
+			label: 'Đã checkin',
+			color: 'lime',
 		},
 		{
 			value: data?.inProgressCount,
-			label: 'Số người đang trong quá trình khám',
+			label: 'Đang trong quá trình khám',
 			color: 'cyan',
 		},
 		{
+			value: data?.testArrangedCount,
+			label: 'Đợi thanh toán phí xét nghiệm',
+			color: 'blue',
+		},
+		{
+			value: data?.testPaidCount,
+			label: 'Đợi checkin xét nghiệm',
+			color: 'grape',
+		},
+		{
+			value: data?.testResultsReadyCount,
+			label: 'Đã đầy đủ kết quả xét nghiệm',
+			color: 'pink',
+		},
+		{
 			value: data?.checkedInAfterTestsCount,
-			label: 'Số người checkin sau xét nghiệm',
+			label: 'Đã checkin sau khi đủ kết quả xét nghiệm',
 			color: 'yellow',
 		},
 		{
 			value: data?.finishedCount,
-			label: 'Số người hoàn thành khám bệnh',
-			color: 'blue',
+			label: 'Hoàn thành khám bệnh',
+			color: 'green',
 		},
 	]
 	const rows = dataForCheckup?.map((row) => {
@@ -52,25 +80,32 @@ const Statistic = () => {
 		)
 	})
 
-	const bookViaAppVsAnonymous = Math.round(
-		((data?.bookedAndPaidCount ?? 0) /
-			((data?.bookedAndPaidCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
-			100
-	)
+	const bookViaAppVsAnonymous =
+		Math.round(
+			((data?.appUserCount ?? 0) /
+				((data?.appUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
+				100
+		) || 0
+	const bookAnonymousVsViaApp =
+		Math.round(
+			((data?.annonymousCount ?? 0) /
+				((data?.appUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
+				100
+		) || 0
 
 	return (
 		<Paper sx={{ background: 'transparent' }}>
 			<Stack sx={{ minHeight: 'calc(100vh - 100px)' }}>
 				<Grid grow align="stretch">
-					<Grid.Col span={8} sx={{ minHeight: 250 }}>
+					<Grid.Col span={8}>
 						<Paper p="sm" sx={{ backgroundColor: 'white', height: '100%' }}>
 							<Stack spacing={'xs'}>
 								<Text size="lg" weight="bolder">
-									Thống kê lượng người khám bệnh
+									Thống kê người khám bệnh
 								</Text>
 								<Divider />
 							</Stack>
-							<Table verticalSpacing="sm" striped fontSize="md">
+							<Table striped fontSize="sm">
 								<thead>
 									<tr>
 										<th>Trạng thái</th>
@@ -83,16 +118,16 @@ const Statistic = () => {
 							</Table>
 						</Paper>
 					</Grid.Col>
-					<Grid.Col span={4} sx={{ minHeight: 250 }}>
-						<Paper p="sm" sx={{ backgroundColor: 'white' }}>
+					<Grid.Col span={4}>
+						<Paper p="sm" sx={{ backgroundColor: 'white', height: '100%' }}>
 							<Stack>
 								<Stack spacing={'xs'}>
 									<Text size="lg" weight="bolder">
-										Thống kê lượng đăng ký khám
+										Thống kê người dùng đăng ký
 									</Text>
 									<Divider />
 								</Stack>
-								<Stack px="md">
+								<Stack p="md">
 									<Center>
 										<RingProgress
 											label={
@@ -100,7 +135,7 @@ const Statistic = () => {
 													<Text size="xs">Tổng cộng</Text>
 													<Text size="xl" weight="bold">
 														{(data?.annonymousCount ?? 0) +
-															(data?.bookedAndPaidCount ?? 0)}
+															(data?.appUserCount ?? 0)}
 													</Text>
 												</Stack>
 											}
@@ -108,7 +143,7 @@ const Statistic = () => {
 											thickness={20}
 											sections={[
 												{ value: bookViaAppVsAnonymous, color: 'green' },
-												{ value: 100 - bookViaAppVsAnonymous, color: 'orange' },
+												{ value: bookAnonymousVsViaApp, color: 'orange' },
 											]}
 										/>
 									</Center>
@@ -116,7 +151,7 @@ const Statistic = () => {
 										<Group position="apart">
 											<Box>
 												<Badge variant="dot" size="lg">
-													Đăng ký qua app ({data?.bookedAndPaidCount} người)
+													Sử dụng app ({data?.appUserCount ?? 0} người)
 												</Badge>
 											</Box>
 											<Text>{bookViaAppVsAnonymous}%</Text>
@@ -127,64 +162,94 @@ const Statistic = () => {
 													Khách vãng lai ({data?.annonymousCount} người)
 												</Badge>
 											</Box>
-											<Text>{100 - bookViaAppVsAnonymous}%</Text>
+											<Text>{bookAnonymousVsViaApp}%</Text>
 										</Group>
 									</Stack>
 								</Stack>
 							</Stack>
 						</Paper>
 					</Grid.Col>
-					<Grid.Col span={12} sx={{ minHeight: 250 }}>
+					<Grid.Col span={12} sx={{ minHeight: 200 }}>
 						<Paper p="sm" sx={{ backgroundColor: 'white', height: '100%' }}>
 							<Stack spacing={'xs'}>
 								<Text size="lg" weight="bolder">
-									Thống kê lượng người xét nghiệm
+									Thống kê danh sách xét nghiệm
 								</Text>
 								<Divider />
 
-								<Group grow pt="sm">
-									<Stack>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.notPaidCount}{' '}
-											<Text span size="sm" weight="normal">
-												người chưa thanh toán
+								<Group grow py="sm" spacing="md">
+									<Paper
+										withBorder
+										shadow="xs"
+										p="sm"
+										sx={{
+											backgroundColor: 'white',
+											borderColor: colors.teal[2],
+										}}
+									>
+										<Stack spacing="xs">
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.notPaidCount}{' '}
+												<Text span size="sm" weight="normal">
+													chưa thanh toán
+												</Text>
 											</Text>
-										</Text>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.paidCount}{' '}
-											<Text span size="sm" weight="normal">
-												người đã thanh toán
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.paidCount}{' '}
+												<Text span size="sm" weight="normal">
+													đã thanh toán
+												</Text>
 											</Text>
-										</Text>
-									</Stack>
-									<Stack>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.checkedInCount}{' '}
-											<Text span size="sm" weight="normal">
-												người đã check in
+										</Stack>
+									</Paper>
+									<Paper
+										withBorder
+										p="xs"
+										shadow="xs"
+										sx={{
+											backgroundColor: 'white',
+											borderColor: colors.indigo[2],
+										}}
+									>
+										<Stack spacing="xs">
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.checkedInCount}{' '}
+												<Text span size="sm" weight="normal">
+													đã check in
+												</Text>
 											</Text>
-										</Text>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.testInProgressCount}{' '}
-											<Text span size="sm" weight="normal">
-												người đang xét nghiệm
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.testInProgressCount}{' '}
+												<Text span size="sm" weight="normal">
+													đang xét nghiệm
+												</Text>
 											</Text>
-										</Text>
-									</Stack>
-									<Stack>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.resultFilledCount}{' '}
-											<Text span size="sm" weight="normal">
-												người đã có kết quả xét nghiệm
+										</Stack>
+									</Paper>
+									<Paper
+										withBorder
+										p="xs"
+										shadow="xs"
+										sx={{
+											backgroundColor: 'white',
+											borderColor: colors.orange[2],
+										}}
+									>
+										<Stack spacing="xs">
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.operationFinishedCount}{' '}
+												<Text span size="sm" weight="normal">
+													đợi kết quả xét nghiệm
+												</Text>
 											</Text>
-										</Text>
-										<Text size="xl" weight="bolder">
-											{data?.testRecords?.operationFinishedCount}{' '}
-											<Text span size="sm" weight="normal">
-												người đã hoàn thành xét nghiệm
+											<Text size="xl" weight="bolder">
+												{data?.testRecords?.resultFilledCount}{' '}
+												<Text span size="sm" weight="normal">
+													đã có kết quả xét nghiệm
+												</Text>
 											</Text>
-										</Text>
-									</Stack>
+										</Stack>
+									</Paper>
 								</Group>
 							</Stack>
 						</Paper>

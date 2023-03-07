@@ -9,6 +9,7 @@ export interface TestRecordStatistics {
 
 export interface IStatistics {
 	annonymousCount: number
+	appUserCount: number
 	bookedAndPaidCount: number
 	checkedInCount: number
 	inProgressCount: number
