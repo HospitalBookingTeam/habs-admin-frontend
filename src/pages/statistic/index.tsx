@@ -8,32 +8,54 @@ import {
 	Group,
 	Paper,
 	RingProgress,
+	SimpleGrid,
 	Stack,
 	Table,
 	Text,
 	useMantineTheme,
 } from '@mantine/core'
+import { DatePicker } from '@mantine/dates'
+import { useState } from 'react'
+import 'dayjs/locale/vi'
+import { IconCalendar } from '@tabler/icons'
+import { useAppSelector } from '@/store/hooks'
+import { selectTime } from '@/store/configs/selectors'
+import dayjs from 'dayjs'
+import { formatDate } from '@/utils/formats'
 
 const Statistic = () => {
+	const { colors } = useMantineTheme()
+	const configTime = useAppSelector(selectTime)
+
+	const [value, setValue] = useState<Date | null>(
+		new Date(dayjs().valueOf() + (configTime ?? 0))
+	)
+
 	const { data, isLoading } = useGetStatisticsQuery(
-		{},
+		{
+			from: value
+				? `${formatDate(value.toString(), 'YYYY-MM-DDT00:00:00')}Z`
+				: undefined,
+			to: value
+				? `${formatDate(value.toString(), 'YYYY-MM-DDT23:59:59')}Z`
+				: undefined,
+		},
 		{
 			refetchOnMountOrArgChange: true,
 			refetchOnFocus: true,
 		}
 	)
-	const { colors } = useMantineTheme()
 
 	const dataForCheckup = [
 		{
 			value: data?.bookedAndPaidCount,
-			label: 'Đã thanh toán phí khám bệnh',
+			label: 'Đã đặt lịch',
 			color: 'teal',
 		},
 		{
 			value: data?.checkedInCount,
-			label: 'Đã checkin',
-			color: 'lime',
+			label: 'Đợi khám (đã checkin)',
+			color: 'yellow',
 		},
 		{
 			value: data?.inProgressCount,
@@ -41,29 +63,36 @@ const Statistic = () => {
 			color: 'cyan',
 		},
 		{
-			value: data?.testArrangedCount,
-			label: 'Đợi thanh toán phí xét nghiệm',
-			color: 'blue',
-		},
-		{
 			value: data?.testPaidCount,
-			label: 'Đợi checkin xét nghiệm',
+			label: 'Đợi xét nghiệm',
 			color: 'grape',
-		},
-		{
-			value: data?.testResultsReadyCount,
-			label: 'Đã đầy đủ kết quả xét nghiệm',
-			color: 'pink',
-		},
-		{
-			value: data?.checkedInAfterTestsCount,
-			label: 'Đã checkin sau khi đủ kết quả xét nghiệm',
-			color: 'yellow',
 		},
 		{
 			value: data?.finishedCount,
 			label: 'Hoàn thành khám bệnh',
 			color: 'green',
+		},
+	]
+	const dataForTest = [
+		{
+			value: data?.testRecords?.checkedInCount,
+			label: 'Đợi xét nghiệm (đã checkin)',
+			color: colors.cyan[2],
+		},
+		{
+			value: data?.testRecords?.testInProgressCount,
+			label: 'Đang tiến hành',
+			color: colors.indigo[2],
+		},
+		{
+			value: data?.testRecords?.operationFinishedCount,
+			label: 'Đợi kết quả',
+			color: colors.orange[2],
+		},
+		{
+			value: data?.testRecords?.resultFilledCount,
+			label: 'Hoàn thành khám bệnh',
+			color: colors.green[2],
 		},
 	]
 	const rows = dataForCheckup?.map((row) => {
@@ -96,6 +125,17 @@ const Statistic = () => {
 	return (
 		<Paper sx={{ background: 'transparent' }}>
 			<Stack sx={{ minHeight: 'calc(100vh - 100px)' }}>
+				<Box sx={{ maxWidth: 210 }}>
+					<DatePicker
+						icon={<IconCalendar size="1.25rem" />}
+						placeholder="Chọn ngày"
+						size="md"
+						value={value}
+						onChange={setValue}
+						locale="vi"
+					/>
+				</Box>
+
 				<Grid grow align="stretch">
 					<Grid.Col span={8}>
 						<Paper p="sm" sx={{ backgroundColor: 'white', height: '100%' }}>
@@ -105,7 +145,7 @@ const Statistic = () => {
 								</Text>
 								<Divider />
 							</Stack>
-							<Table striped fontSize="sm">
+							<Table verticalSpacing={'sm'} striped fontSize="md">
 								<thead>
 									<tr>
 										<th>Trạng thái</th>
@@ -150,16 +190,16 @@ const Statistic = () => {
 									<Stack sx={{ flex: 1 }}>
 										<Group position="apart">
 											<Box>
-												<Badge variant="dot" size="lg">
-													Sử dụng app ({data?.appUserCount ?? 0} người)
+												<Badge variant="dot" size="lg" fullWidth>
+													mobile app ({data?.appUserCount ?? 0} người)
 												</Badge>
 											</Box>
 											<Text>{bookViaAppVsAnonymous}%</Text>
 										</Group>
 										<Group spacing={4} position="apart">
 											<Box>
-												<Badge variant="dot" size="lg" color="orange">
-													Khách vãng lai ({data?.annonymousCount} người)
+												<Badge variant="dot" size="lg" color="orange" fullWidth>
+													Vãng lai ({data?.annonymousCount} người)
 												</Badge>
 											</Box>
 											<Text>{bookAnonymousVsViaApp}%</Text>
@@ -177,80 +217,29 @@ const Statistic = () => {
 								</Text>
 								<Divider />
 
-								<Group grow py="sm" spacing="md">
-									<Paper
-										withBorder
-										shadow="xs"
-										p="sm"
-										sx={{
-											backgroundColor: 'white',
-											borderColor: colors.teal[2],
-										}}
-									>
-										<Stack spacing="xs">
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.notPaidCount}{' '}
-												<Text span size="sm" weight="normal">
-													chưa thanh toán
+								<SimpleGrid cols={2}>
+									{dataForTest?.map((item) => (
+										<Paper
+											withBorder
+											shadow="xs"
+											p="sm"
+											key={item.label}
+											sx={{
+												backgroundColor: 'white',
+												borderColor: item.color,
+											}}
+										>
+											<Stack spacing="xs">
+												<Text size="xl" weight="bolder">
+													{item.value}{' '}
+													<Text span size="sm" weight="normal">
+														{item.label}
+													</Text>
 												</Text>
-											</Text>
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.paidCount}{' '}
-												<Text span size="sm" weight="normal">
-													đã thanh toán
-												</Text>
-											</Text>
-										</Stack>
-									</Paper>
-									<Paper
-										withBorder
-										p="xs"
-										shadow="xs"
-										sx={{
-											backgroundColor: 'white',
-											borderColor: colors.indigo[2],
-										}}
-									>
-										<Stack spacing="xs">
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.checkedInCount}{' '}
-												<Text span size="sm" weight="normal">
-													đã check in
-												</Text>
-											</Text>
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.testInProgressCount}{' '}
-												<Text span size="sm" weight="normal">
-													đang xét nghiệm
-												</Text>
-											</Text>
-										</Stack>
-									</Paper>
-									<Paper
-										withBorder
-										p="xs"
-										shadow="xs"
-										sx={{
-											backgroundColor: 'white',
-											borderColor: colors.orange[2],
-										}}
-									>
-										<Stack spacing="xs">
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.operationFinishedCount}{' '}
-												<Text span size="sm" weight="normal">
-													đợi kết quả xét nghiệm
-												</Text>
-											</Text>
-											<Text size="xl" weight="bolder">
-												{data?.testRecords?.resultFilledCount}{' '}
-												<Text span size="sm" weight="normal">
-													đã có kết quả xét nghiệm
-												</Text>
-											</Text>
-										</Stack>
-									</Paper>
-								</Group>
+											</Stack>
+										</Paper>
+									))}
+								</SimpleGrid>
 							</Stack>
 						</Paper>
 					</Grid.Col>
