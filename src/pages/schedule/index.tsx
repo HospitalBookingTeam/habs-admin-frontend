@@ -100,7 +100,9 @@ const ImportSchedule = () => {
 							<Input
 								type="week"
 								value={downloadDate}
-								onChange={(event) => setDownloadDate(event.target.value)}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									setDownloadDate(event.target.value)
+								}
 							/>
 							<Button
 								loading={isLoadingDownloadDate}
