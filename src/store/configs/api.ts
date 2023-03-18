@@ -26,13 +26,31 @@ export const configApi = api.injectEndpoints({
 				return {
 					url: `schedule/schedule-table`,
 					params: args,
-					responseHandler: async (response) =>
-						window.location.assign(
-							window.URL.createObjectURL(await response.blob())
-						),
+					responseHandler: async (response) => {
+						const blob = await response.blob()
+						const filename = response.headers
+							?.get('content-disposition')
+							?.split('filename=')[1]
+						const url = window.URL.createObjectURL(blob)
+						const link = document.createElement('a')
+						link.href = url
+						link.setAttribute('download', filename ?? '')
+						document.body.appendChild(link)
+						link.click()
+					},
 					cache: 'no-cache',
 				}
 			},
+		}),
+		updateSchedule: build.mutation<void, { startDate: string; data: any }>({
+			query: (body) => ({
+				url: `schedule/schedule-table`,
+				params: {
+					'start-date': body.startDate,
+				},
+				method: 'POST',
+				body: body.data,
+			}),
 		}),
 	}),
 })
@@ -40,8 +58,9 @@ export const configApi = api.injectEndpoints({
 export const {
 	useUpdateConfigMutation,
 	useGetConfigsQuery,
-	useDownloadScheduleQuery,
+	useLazyDownloadScheduleQuery,
 	useLazyGetTimeQuery,
+	useUpdateScheduleMutation,
 } = configApi
 
 export const {
