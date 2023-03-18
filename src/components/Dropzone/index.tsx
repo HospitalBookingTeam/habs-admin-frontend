@@ -85,11 +85,17 @@ const DropzoneButton = (props: Partial<DropzoneProps>) => {
 						</Dropzone.Idle>
 					</Group>
 
-					<Text align="center" weight={700} size="lg" mt="lg">
-						<Dropzone.Accept>Kéo thả file ở đây</Dropzone.Accept>
-						<Dropzone.Reject>Dung lượng không vượt quá 5mb</Dropzone.Reject>
-						<Dropzone.Idle>Upload file</Dropzone.Idle>
-					</Text>
+					{!file ? (
+						<Text align="center" weight={700} size="lg" mt="lg">
+							<Dropzone.Accept>Kéo thả file ở đây</Dropzone.Accept>
+							<Dropzone.Reject>Dung lượng không vượt quá 5mb</Dropzone.Reject>
+							<Dropzone.Idle>Upload file</Dropzone.Idle>
+						</Text>
+					) : (
+						<Text align="center" weight={700} size="lg" mt="lg">
+							{file?.[0]?.name}
+						</Text>
+					)}
 					<Text align="center" size="sm" mt="xs" color="dimmed">
 						Kéo thả file ở đây. Chỉ chấp nhận file <i>.xls</i> dưới 5mb.
 					</Text>
