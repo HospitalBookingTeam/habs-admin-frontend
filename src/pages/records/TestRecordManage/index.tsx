@@ -120,7 +120,8 @@ const TestRecordManage = () => {
 					{row.patientName}
 				</Text>
 			</td>
-			<td>{row.doctor}</td>
+			<td>{row.operationName}</td>
+			<td>{`${row.roomNumber} tầng ${row.floor}`}</td>
 			<td>
 				<Text
 					sx={{
@@ -190,70 +191,74 @@ const TestRecordManage = () => {
 					/>
 				</Group>
 			</Stack>
-			<Table
-				horizontalSpacing="md"
-				verticalSpacing="xs"
-				sx={{ tableLayout: 'fixed', minWidth: 700, minHeight: 300 }}
-			>
-				<thead>
-					<tr>
-						<Th
-							sorted={sortBy === 'numericalOrder'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('numericalOrder')}
-							width={100}
-						>
-							SKB
-						</Th>
-						<Th
-							sorted={sortBy === 'patientName'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('patientName')}
-						>
-							Người bệnh
-						</Th>
-						<Th
-							sorted={sortBy === 'doctor'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('doctor')}
-						>
-							Bác sĩ
-						</Th>
-						<Th
-							sorted={sortBy === 'status'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('status')}
-							width={170}
-						>
-							Tình trạng
-						</Th>
-
-						<Th
-							sorted={sortBy === 'date'}
-							reversed={reverseSortDirection}
-							onSort={() => setSorting('date')}
-							width={200}
-						>
-							Thời gian
-						</Th>
-						<th style={{ width: 50 }}></th>
-					</tr>
-				</thead>
-				<tbody>
-					{rows?.length && rows?.length > 0 ? (
-						rows
-					) : (
+			<Stack sx={{ minWidth: 700, minHeight: 300 }}>
+				<Table horizontalSpacing="md" verticalSpacing="xs">
+					<thead>
 						<tr>
-							<td colSpan={6}>
-								<Center>
-									<Text align="center">Không tìm thấy dữ liệu</Text>
-								</Center>
-							</td>
-						</tr>
-					)}
-				</tbody>
-			</Table>
+							<Th
+								sorted={sortBy === 'numericalOrder'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('numericalOrder')}
+								width={100}
+							>
+								SKB
+							</Th>
+							<Th
+								sorted={sortBy === 'patientName'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('patientName')}
+							>
+								Người bệnh
+							</Th>
+							<Th
+								sorted={sortBy === 'operationName'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('operationName')}
+							>
+								Tên xét nghiệm
+							</Th>
+							<Th
+								sorted={sortBy === 'roomNumber'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('roomNumber')}
+							>
+								Phòng
+							</Th>
+							<Th
+								sorted={sortBy === 'status'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('status')}
+								width={170}
+							>
+								Tình trạng
+							</Th>
 
+							<Th
+								sorted={sortBy === 'date'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('date')}
+								width={200}
+							>
+								Thời gian
+							</Th>
+							<th style={{ width: 50 }}></th>
+						</tr>
+					</thead>
+					<tbody>
+						{rows?.length && rows?.length > 0 ? (
+							rows
+						) : (
+							<tr>
+								<td colSpan={8}>
+									<Center my="md">
+										<Text align="center">Không tìm thấy dữ liệu</Text>
+									</Center>
+								</td>
+							</tr>
+						)}
+					</tbody>
+				</Table>
+			</Stack>
 			<Group
 				position="center"
 				sx={{ position: 'relative' }}

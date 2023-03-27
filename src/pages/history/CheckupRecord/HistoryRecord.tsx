@@ -12,10 +12,25 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 			<Stack>
 				<RowWithLabel
 					label="Tình trạng"
-					content={data?.isReExam ? 'Tái khám' : 'Khám thường'}
+					content={data?.isReExam ? 'Tái khám' : 'Khám mới'}
 				/>
 				<RowWithLabel label="Khoa" content={data?.departmentName} isOdd />
 				<RowWithLabel label="Bác sĩ" content={data?.doctorName} />
+				<RowWithLabel
+					label="Phòng"
+					content={`Phòng khám ${data?.roomNumber ?? '--'} tầng ${
+						data?.floor ?? '--'
+					}`}
+					isOdd
+				/>
+				<RowWithLabel label="Triệu chứng" content={data?.clinicalSymptom} />
+				<RowWithLabel
+					label="Chẩn đoán"
+					content={data?.icdDiseases
+						?.map((item) => item.icdDiseaseName)
+						?.join(', ')}
+					isOdd
+				/>
 
 				<Grid>
 					<Grid.Col span={3}>
@@ -23,7 +38,6 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Chiều cao (cm)"
 							content={data?.bloodPressure?.toString() ?? '---'}
-							isOdd
 						/>
 					</Grid.Col>
 					<Grid.Col span={3}>
@@ -31,7 +45,6 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Cân nặng (kg)"
 							content={data?.pulse?.toString() ?? '---'}
-							isOdd
 						/>
 					</Grid.Col>
 					<Grid.Col span={3}>
@@ -39,7 +52,6 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 							labelSpan={7}
 							label="Nhiệt độ (°C)"
 							content={data?.temperature?.toString() ?? '---'}
-							isOdd
 						/>
 					</Grid.Col>
 				</Grid>
@@ -47,12 +59,12 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 					labelSpan={3}
 					label="Chẩn đoán cận lâm sàng"
 					content={data?.diagnosis?.toString() ?? '---'}
+					isOdd
 				/>
 				<RowWithLabel
 					labelSpan={3}
 					label="Lời khuyên bác sĩ"
 					content={data?.doctorAdvice?.toString() ?? '---'}
-					isOdd
 				/>
 			</Stack>
 		</Stack>

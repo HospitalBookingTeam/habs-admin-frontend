@@ -121,6 +121,7 @@ const PatientManage = () => {
 				</Text>
 			</td>
 			<td>{row.doctorName}</td>
+
 			<td>
 				<Text
 					sx={{
@@ -132,6 +133,7 @@ const PatientManage = () => {
 					{translateCheckupRecordStatus(row.status)}
 				</Text>
 			</td>
+			<td>{`${row.roomNumber} tầng ${row.floor}`}</td>
 			<td>
 				<Text align="center">{row.isReExam ? 'Có' : 'Không'}</Text>
 			</td>
@@ -227,6 +229,13 @@ const PatientManage = () => {
 								Tình trạng
 							</Th>
 							<Th
+								sorted={sortBy === 'roomNumber'}
+								reversed={reverseSortDirection}
+								onSort={() => setSorting('roomNumber')}
+							>
+								Phòng
+							</Th>
+							<Th
 								sorted={sortBy === 'isReExam'}
 								reversed={reverseSortDirection}
 								onSort={() => setSorting('isReExam')}
@@ -250,8 +259,8 @@ const PatientManage = () => {
 							rows
 						) : (
 							<tr>
-								<td colSpan={6}>
-									<Center>
+								<td colSpan={8}>
+									<Center my="md">
 										<Text align="center">Không tìm thấy dữ liệu</Text>
 									</Center>
 								</td>

@@ -7,7 +7,11 @@ export interface Patient {
 	address: string
 	bhyt: string
 }
-
+export interface IcdDiseases {
+	icdDiseaseId: number
+	icdDiseaseName: string
+	icdCode: string
+}
 export interface HistoryCheckupRecord {
 	patientData: PatientData
 	testRecords: any[]
@@ -30,9 +34,7 @@ export interface HistoryCheckupRecord {
 	patientId: number
 	doctorId: number
 	departmentId: number
-	icdDiseaseId?: any
-	icdDiseaseName?: any
-	icdCode?: any
+	icdDiseases?: IcdDiseases[]
 	isReExam: boolean
 	qrCode: string
 	reExamTreeCode: string
@@ -40,6 +42,8 @@ export interface HistoryCheckupRecord {
 	reExamNote?: any
 	address: string
 	reExam?: any
+	roomNumber?: string
+	floor?: string
 }
 
 export interface HistoryTestRecord {

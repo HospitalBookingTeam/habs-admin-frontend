@@ -39,10 +39,22 @@ const RecordHistory = () => {
 							<Divider />
 							<HistoryRecord data={recordData} />
 
-							<Divider />
-							<TestRecordList data={recordData?.testRecords} />
-							<Divider />
-							<MedicationList data={recordData?.prescription} />
+							{recordData?.testRecords?.length ? (
+								<>
+									<Divider />
+									<TestRecordList data={recordData?.testRecords} />
+								</>
+							) : (
+								<></>
+							)}
+							{recordData?.prescription ? (
+								<>
+									<Divider />
+									<MedicationList data={recordData?.prescription} />
+								</>
+							) : (
+								<></>
+							)}
 						</Stack>
 					</Tabs.Panel>
 				</Tabs>

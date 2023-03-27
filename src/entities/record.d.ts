@@ -10,6 +10,8 @@ export interface CheckupRecord {
 	departmentName: string
 	isReExam: boolean
 	qrCode: string
+	floor: string
+	roomNumber: string
 }
 
 export interface CheckupRecordList extends PaginationMeta {
@@ -35,6 +37,8 @@ export interface TestRecord {
 	status: number
 	patientName: string
 	operationName: string
+	floor: string
+	roomNumber: string
 }
 
 export interface TestRecordList extends PaginationMeta {
