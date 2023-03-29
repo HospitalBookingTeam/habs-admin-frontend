@@ -29,7 +29,7 @@ const TestRecordHistory = lazy(() => import('@/pages/history/TestRecord'))
 
 const ManageRecords = lazy(() => import('@/pages/records'))
 const DemoScript = lazy(() => import('@/pages/demo'))
-const ImportSchedule = lazy(() => import('@/pages/schedule'))
+const ImportData = lazy(() => import('@/pages/import-data'))
 const Statistics = lazy(() => import('@/pages/statistic'))
 
 const App = () => {
@@ -93,7 +93,7 @@ const App = () => {
 							<Route path="tests" element={<Outlet />}>
 								<Route path=":id" element={<TestRecordHistory />} />
 							</Route>
-							<Route path="schedule" element={<ImportSchedule />} />
+							<Route path="import" element={<ImportData />} />
 							<Route path="configs" element={<ConfigContainer />} />
 						</Route>
 					</Route>

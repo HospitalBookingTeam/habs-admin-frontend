@@ -20,15 +20,18 @@ import {
 	Text,
 	Paper,
 	Container,
+	Divider,
+	ScrollArea,
 } from '@mantine/core'
 import { UseMutation } from '@reduxjs/toolkit/dist/query/react/buildHooks'
 import useGlobalStyles from '@/utils/useGlobalStyles'
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useRef, useCallback } from 'react'
 import { useForm } from '@mantine/form'
 import { showNotification } from '@mantine/notifications'
 import DateTimePicker from '@/components/TimePicker'
 import dayjs from 'dayjs'
 import { formatDate } from '@/utils/formats'
+import { IScriptResponse } from '@/entities/script'
 
 const DemoScript = () => {
 	const [time, setTime] = useState<Date | null>(new Date())
@@ -120,18 +123,18 @@ const DemoScript = () => {
 	]
 
 	return (
-		<Container size="xl">
+		<Container size="xl" sx={{ width: '100%' }}>
 			<Stack py="lg">
 				<Paper p="md" sx={{ background: 'white' }}>
 					<Group align="end">
 						<DateTimePicker
 							locale="vi"
-							label="Script 0: Thay đổi thời gian"
+							label="Thay đổi thời gian khám"
 							value={time}
 							onChange={setTime}
 							sx={{ flex: 1, maxWidth: 300 }}
 						/>
-						<Stack sx={{ flex: 1 }} align="end">
+						<Stack sx={{ flex: 1 }} align="start">
 							<Button
 								onClick={updateNow}
 								loading={isLoadingNow}
@@ -157,8 +160,19 @@ type ScriptActionProps = {
 }
 const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 	const { classes } = useGlobalStyles()
-	const [mutate, { isLoading }] = mutation()
+	const [mutate] = mutation()
+	const [isLoading, setIsLoading] = useState(false)
 	const [openModal, setOpenModal] = useState(false)
+	const [messages, setMessages] = useState<string[]>([])
+	const [messageBatch, setMessageBatch] = useState<string[][]>([])
+	const [isUpdateMessage, setIsUpdateMessage] = useState(false)
+	const myTimer = useRef<NodeJS.Timer | null>(null)
+	const viewport = useRef<HTMLDivElement>(null)
+	const scrollToBottom = () =>
+		viewport?.current?.scrollTo({
+			top: viewport?.current?.scrollHeight,
+			behavior: 'smooth',
+		})
 
 	const form = useForm({
 		initialValues: {
@@ -171,13 +185,57 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 	})
 
 	const handleSubmit = async (values: { num: number }) => {
+		setOpenModal(false)
+		setMessages([])
+		setMessageBatch([])
+		setIsUpdateMessage(false)
+		setIsLoading(true)
 		await mutate(values.num)
 			.unwrap()
-			.then(() => {
-				showNotification({
-					title: 'Thành công',
-					message: <></>,
-				})
+			.then((resp) => {
+				const result = resp as IScriptResponse
+				const mock = {
+					messages: [
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'Test A',
+						'aaTest Aaa',
+						'aaaa',
+						'aaaaaa',
+						'aaaaaaa',
+						'aaaaa',
+						'aaaaa',
+						'aaaa',
+						'aaaa',
+						'aaaaaa',
+						'aaaaaaa',
+						'aaaaa',
+						'aaaaa',
+						'aaaa',
+						'aaaa',
+						'aaaaaa',
+						'aaaaaaa',
+						'aaaaa',
+						'aaaaa',
+						'aaaa',
+						'aaaa',
+						'aaaaaa',
+					],
+				}
+				setMessages(result?.messages || mock.messages)
+				setIsUpdateMessage(true)
 				setOpenModal(false)
 			})
 			.catch((error) => {
@@ -187,23 +245,70 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 					color: 'red',
 					autoClose: 10000,
 				})
+				setIsLoading(false)
 			})
 	}
+
+	useEffect(() => {
+		if (!isUpdateMessage) return
+		function startTimer(_messages: string[]) {
+			let i = 0
+			myTimer.current = setInterval(() => {
+				if (i < _messages.length) {
+					const batchSize = Math.floor(Math.random() * 5) + 3
+					const batch = _messages.slice(i, i + batchSize)
+					setMessageBatch((prevBatches) => [...prevBatches, batch])
+					i += batchSize
+				} else {
+					if (myTimer?.current) clearInterval(myTimer.current)
+					setIsLoading(false)
+				}
+				scrollToBottom()
+			}, 250)
+		}
+		startTimer(messages)
+		return () => {
+			if (myTimer?.current) return clearInterval(myTimer.current)
+		}
+	}, [isUpdateMessage, messages])
+
 	return (
 		<Fragment>
 			<Paper p="md" sx={{ backgroundColor: 'white' }}>
-				<Group position="apart" spacing={'xl'}>
-					<Stack>
-						<Text weight={500}>{label}</Text>
-						<Text>{title}</Text>
+				<Group position="apart" align="baseline" spacing={'xl'}>
+					<Stack sx={{ flex: 1 }}>
+						<Text weight={500} sx={{ maxWidth: 700 }}>
+							{title}
+						</Text>
+						<Button
+							onClick={() => {
+								setOpenModal(true)
+							}}
+							sx={{ width: 'fit-content' }}
+							loading={isLoading}
+						>
+							Thực hiện
+						</Button>
 					</Stack>
-					<Button
-						onClick={() => {
-							setOpenModal(true)
-						}}
-					>
-						Thực hiện
-					</Button>
+					<Paper sx={{ flex: '1' }} p="md">
+						<Stack>
+							<Stack spacing={'xs'}>
+								<Text weight={500}>Output console</Text>
+								<Divider />
+							</Stack>
+							<ScrollArea.Autosize maxHeight={300} viewportRef={viewport}>
+								<Stack sx={{ minHeight: 100 }}>
+									{messageBatch?.map((batch, index) => (
+										<Stack spacing={1} key={index}>
+											{batch?.map((message, messageIndex) => (
+												<p key={messageIndex}>{message}</p>
+											))}
+										</Stack>
+									))}
+								</Stack>
+							</ScrollArea.Autosize>
+						</Stack>
+					</Paper>
 				</Group>
 			</Paper>
 			<Modal

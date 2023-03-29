@@ -1,5 +1,6 @@
-type Schedule = {
-	'Bác sĩ'?: number
+export type Schedule = {
+	'Mã BS'?: number
+	'Tên BS'?: string
 	'Sáng T2'?: number
 	'Chiều T2'?: number
 	'Tối T2'?: number

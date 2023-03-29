@@ -86,7 +86,7 @@ const data = [
 	{ link: '', secondLink: '/', label: 'Thống kê', icon: IconHome },
 	{ link: '/configs', label: 'Thông số', icon: IconPackage },
 	{ link: '/records', label: 'Quản lí bệnh án', icon: IconList },
-	{ link: '/schedule', label: 'Cập nhật dữ liệu', icon: IconTimeline },
+	{ link: '/import', label: 'Cập nhật dữ liệu', icon: IconTimeline },
 ]
 
 interface NavbarLinkProps {

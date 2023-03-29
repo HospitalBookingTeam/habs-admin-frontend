@@ -1,119 +1,111 @@
+import { IScriptResponse } from '@/entities/script'
 import { api } from '../api'
 
 export const configApi = api.injectEndpoints({
 	endpoints: (build) => ({
-		script1: build.mutation<void, number>({
+		script1: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script1',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script2: build.mutation<void, number>({
+		script2: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script2',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script3: build.mutation<void, number>({
+		script3: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script3',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script4: build.mutation<void, number>({
+		script4: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script4',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script5: build.mutation<void, number>({
+		script5: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script5',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script6: build.mutation<void, number>({
+		script6: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script6',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script7: build.mutation<void, number>({
+		script7: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script7',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script8: build.mutation<void, number>({
+		script8: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script8',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,
 			},
 		}),
-		script9: build.mutation<void, number>({
+		script9: build.mutation<IScriptResponse, number>({
 			query: (quantity) => ({
 				url: 'test/script9',
 				method: 'GET',
 				params: {
 					quantity,
 				},
-				responseHandler: (response) => response.text(),
 			}),
 			extraOptions: {
 				maxRetries: 1,

@@ -15,8 +15,8 @@ import dayjs from 'dayjs'
 import vi from 'dayjs/locale/vi'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import {
-	useLazyDownloadScheduleQuery,
-	useUpdateScheduleMutation,
+	useLazyDownloadOperationPriceQuery,
+	useUpdateOperationPriceMutation,
 } from '@/store/configs/api'
 import {
 	getCurrentWeek,
@@ -29,18 +29,17 @@ dayjs.extend(weekOfYear)
 dayjs.locale({
 	...vi,
 })
-const ImportSchedule = () => {
+const ImportPrice = () => {
 	const isWeekends = dayjs().day() === 0 || dayjs().day() === 6
 
 	const curWeek = Number(splitYearWeek(getCurrentWeek())?.[1]?.substring(1))
-	console.log('curWeek', curWeek)
 	const curYear = dayjs().local().year()
 	const minWeek = `${curYear}-W${curWeek < 10 ? `0${curWeek}` : curWeek}`
 	const [downloadDate, setDownloadDate] = useState<any>(getCurrentWeek())
 	const [triggerDownloadDate, { isLoading: isLoadingDownloadDate }] =
-		useLazyDownloadScheduleQuery()
-	const [updateScheduleMutation, { isLoading: isLoadingUpdateMutation }] =
-		useUpdateScheduleMutation()
+		useLazyDownloadOperationPriceQuery()
+	const [updateMutation, { isLoading: isLoadingUpdateMutation }] =
+		useUpdateOperationPriceMutation()
 
 	const form = useForm({
 		validateInputOnChange: true,
@@ -73,7 +72,7 @@ const ImportSchedule = () => {
 			const data = event.target?.result
 
 			const result = await readExcelFile(data)
-			await updateScheduleMutation({
+			await updateMutation({
 				startDate: weekToISOString(values.week),
 				data: result,
 			})
@@ -81,7 +80,7 @@ const ImportSchedule = () => {
 				.then(() => {
 					showNotification({
 						title: 'Thành công',
-						message: 'Cập nhật lịch thành công',
+						message: 'Cập nhật bảng giá thành công',
 					})
 				})
 		}
@@ -123,7 +122,7 @@ const ImportSchedule = () => {
 					<Divider />
 					<form onSubmit={form.onSubmit(onSubmit)}>
 						<Stack>
-							<Title order={4}>Cập nhật lịch khám</Title>
+							<Title order={4}>Cập nhật bảng giá</Title>
 
 							<Input
 								type="week"
@@ -149,4 +148,4 @@ const ImportSchedule = () => {
 		</Paper>
 	)
 }
-export default ImportSchedule
+export default ImportPrice
