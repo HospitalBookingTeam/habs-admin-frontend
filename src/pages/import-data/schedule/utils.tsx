@@ -30,11 +30,11 @@ export function getCurrentWeek(): string {
 	return `${year}-W${weekNumber.toString().padStart(2, '0')}`
 }
 
-export const splitYearWeek = (date: string) => date.split('-')
+export const splitYearWeek = (date: string) => date.split('-W')
 export function weekToISOString(week: string): string {
 	// Parse the week input as a number
 	const weekNumber = Number(splitYearWeek(week)?.[1]?.substring(1))
-	console.log('weekNumber', weekNumber)
+
 	// Check if the input is a valid week number (between 1 and 53)
 	if (isNaN(weekNumber) || weekNumber < 1 || weekNumber > 53) {
 		throw new Error('Invalid week number')
@@ -45,4 +45,14 @@ export function weekToISOString(week: string): string {
 
 	// Format the week start as an ISO string
 	return weekStart.toISOString()
+}
+
+export function getDateOfISOWeek(week: string) {
+	const [y, w]: string[] = splitYearWeek(week)
+	var simple = new Date(Number(y), 0, 1 + (Number(w) - 1) * 7)
+	var dow = simple.getDay()
+	var ISOweekStart = simple
+	if (dow <= 4) ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1)
+	else ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay())
+	return ISOweekStart.toISOString()
 }

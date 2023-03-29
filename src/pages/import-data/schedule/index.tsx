@@ -20,6 +20,7 @@ import {
 } from '@/store/configs/api'
 import {
 	getCurrentWeek,
+	getDateOfISOWeek,
 	readExcelFile,
 	splitYearWeek,
 	weekToISOString,
@@ -73,7 +74,7 @@ const ImportSchedule = () => {
 
 			const result = await readExcelFile(data)
 			await updateScheduleMutation({
-				startDate: weekToISOString(values.week),
+				startDate: getDateOfISOWeek(values.week),
 				data: result,
 			})
 				.unwrap()
@@ -106,13 +107,9 @@ const ImportSchedule = () => {
 							<Button
 								loading={isLoadingDownloadDate}
 								onClick={async () => {
-									const yearAndWeek = downloadDate.split('-W')
-									const year = Number(yearAndWeek[0])
-									const weekNumber = Number(yearAndWeek[1])
-									const date = new Date(year, 0, (weekNumber - 1) * 7)
-									const isoString = date.toISOString()
-
-									triggerDownloadDate({ startDate: isoString })
+									triggerDownloadDate({
+										startDate: getDateOfISOWeek(downloadDate),
+									})
 								}}
 							>
 								Tải về

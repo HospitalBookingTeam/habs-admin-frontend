@@ -18,13 +18,9 @@ import {
 	useLazyDownloadOperationPriceQuery,
 	useUpdateOperationPriceMutation,
 } from '@/store/configs/api'
-import {
-	getCurrentWeek,
-	readExcelFile,
-	splitYearWeek,
-	weekToISOString,
-} from './utils'
+import { getCurrentWeek, readExcelFile, splitYearWeek } from './utils'
 import { showNotification } from '@mantine/notifications'
+import { getDateOfISOWeek } from '../schedule/utils'
 dayjs.extend(weekOfYear)
 dayjs.locale({
 	...vi,
@@ -73,7 +69,7 @@ const ImportPrice = () => {
 
 			const result = await readExcelFile(data)
 			await updateMutation({
-				startDate: weekToISOString(values.week),
+				startDate: getDateOfISOWeek(values.week),
 				data: result,
 			})
 				.unwrap()
@@ -106,13 +102,9 @@ const ImportPrice = () => {
 							<Button
 								loading={isLoadingDownloadDate}
 								onClick={async () => {
-									const yearAndWeek = downloadDate.split('-W')
-									const year = Number(yearAndWeek[0])
-									const weekNumber = Number(yearAndWeek[1])
-									const date = new Date(year, 0, (weekNumber - 1) * 7)
-									const isoString = date.toISOString()
-
-									triggerDownloadDate({ startDate: isoString })
+									triggerDownloadDate({
+										startDate: getDateOfISOWeek(downloadDate),
+									})
 								}}
 							>
 								Tải về
