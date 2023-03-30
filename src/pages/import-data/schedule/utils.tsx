@@ -49,9 +49,9 @@ export function weekToISOString(week: string): string {
 
 export function getDateOfISOWeek(week: string) {
 	const [y, w]: string[] = splitYearWeek(week)
-	var simple = new Date(Number(y), 0, 1 + (Number(w) - 1) * 7)
-	var dow = simple.getDay()
-	var ISOweekStart = simple
+	const simple = new Date(Date.UTC(Number(y), 0, 1 + (Number(w) - 1) * 7))
+	const dow = simple.getDay()
+	let ISOweekStart = simple
 	if (dow <= 4) ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1)
 	else ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay())
 	return ISOweekStart.toISOString()
