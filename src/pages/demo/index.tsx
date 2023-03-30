@@ -64,58 +64,58 @@ const DemoScript = () => {
 			})
 	}
 
-	const scripts: (ScriptActionProps & { id: string })[] = [
+	const scripts: ScriptActionProps[] = [
 		{
-			id: '1',
+			scriptId: '1',
 			mutation: useScript1Mutation,
 			title: 'Đặt lịch cho ngẫu nhiên X người',
 			label: 'Script 1',
 		},
 		{
-			id: '2',
+			scriptId: '2',
 			mutation: useScript2Mutation,
 			title: 'Thanh toán cho ngẫu nhiên X bệnh nhân đã đặt lịch khám',
 			label: 'Script 2',
 		},
 		{
-			id: '3',
+			scriptId: '3',
 			mutation: useScript3Mutation,
 			title: 'Checkin cho ngẫu nhiên X người đã thanh toán',
 			label: 'Script 3',
 		},
 		{
-			id: '4',
+			scriptId: '4',
 			mutation: useScript4Mutation,
 			title:
 				'Hoàn thành ngẫu nhiên X bệnh án + đặt ngẫu nhiên đơn thuốc, mỗi đơn từ 6 đến 10 thuốc',
 			label: 'Script 4',
 		},
 		{
-			id: '5',
+			scriptId: '5',
 			mutation: useScript5Mutation,
 			title: 'Đặt từ 1 đến 3 xét nghiệm cho X người ngẫu nhiên',
 			label: 'Script 5',
 		},
 		{
-			id: '6',
+			scriptId: '6',
 			mutation: useScript6Mutation,
 			title: 'Thanh toán phí XN cho X người ngẫu nhiên',
 			label: 'Script 6',
 		},
 		{
-			id: '7',
+			scriptId: '7',
 			mutation: useScript7Mutation,
 			title: 'Checkin cho X người ngẫu nhiên đã thanh toán phí xét nghiệm',
 			label: 'Script 7',
 		},
 		{
-			id: '8',
+			scriptId: '8',
 			mutation: useScript8Mutation,
 			title: 'Hoàn thành tất cả xét nghiệm cho X bệnh án',
 			label: 'Script 8',
 		},
 		{
-			id: '9',
+			scriptId: '9',
 			mutation: useScript9Mutation,
 			title: 'Checkin quay lại phòng khám cho X bệnh án',
 			label: 'Script 9',
@@ -146,7 +146,7 @@ const DemoScript = () => {
 					</Group>
 				</Paper>
 				{scripts.map((item) => (
-					<ScriptAction {...item} key={item.id} />
+					<ScriptAction {...item} key={item.scriptId} />
 				))}
 			</Stack>
 		</Container>
@@ -157,8 +157,15 @@ type ScriptActionProps = {
 	mutation: UseMutation<any>
 	title: string
 	label: string
+	scriptId: string
 }
-const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
+const ScriptAction = ({
+	mutation,
+	title,
+	label,
+	scriptId,
+}: ScriptActionProps) => {
+	const isScript1 = scriptId === '1'
 	const { classes } = useGlobalStyles()
 	const [mutate] = mutation()
 	const [isLoading, setIsLoading] = useState(false)
@@ -166,6 +173,8 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 	const [messages, setMessages] = useState<string[]>([])
 	const [messageBatch, setMessageBatch] = useState<string[][]>([])
 	const [isUpdateMessage, setIsUpdateMessage] = useState(false)
+	const [isDoneSignal, setIsDoneSignal] = useState(false)
+
 	const myTimer = useRef<NodeJS.Timer | null>(null)
 	const viewport = useRef<HTMLDivElement>(null)
 	const scrollToBottom = () =>
@@ -184,57 +193,43 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 		},
 	})
 
+	const runSignal = (num: number) => {
+		if (!isScript1) return
+		setIsDoneSignal(false)
+
+		let i = 0
+
+		const runResponse = () => {
+			if (i === 0) {
+				const message1 = ['Đang dọn dẹp dữ liệu test cũ']
+				setMessageBatch((prevBatches) => [...prevBatches, message1])
+				setTimeout(runResponse, 500)
+			}
+			if (i === 1) {
+				const message2 = [
+					'Dọn dẹp dữ liệu test thành công',
+					`Tiến hành đặt lịch khám cho ${num} người`,
+				]
+				setMessageBatch((prevBatches) => [...prevBatches, message2])
+				setIsDoneSignal(true)
+			}
+			i++
+			scrollToBottom()
+		}
+		setTimeout(runResponse, 750)
+	}
+
 	const handleSubmit = async (values: { num: number }) => {
 		setOpenModal(false)
-		setMessages([])
-		setMessageBatch([])
+
 		setIsUpdateMessage(false)
 		setIsLoading(true)
+		runSignal(values.num)
 		await mutate(values.num)
 			.unwrap()
 			.then((resp) => {
 				const result = resp as IScriptResponse
-				const mock = {
-					messages: [
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'Test A',
-						'aaTest Aaa',
-						'aaaa',
-						'aaaaaa',
-						'aaaaaaa',
-						'aaaaa',
-						'aaaaa',
-						'aaaa',
-						'aaaa',
-						'aaaaaa',
-						'aaaaaaa',
-						'aaaaa',
-						'aaaaa',
-						'aaaa',
-						'aaaa',
-						'aaaaaa',
-						'aaaaaaa',
-						'aaaaa',
-						'aaaaa',
-						'aaaa',
-						'aaaa',
-						'aaaaaa',
-					],
-				}
-				setMessages(result?.messages || mock.messages)
+				setMessages(result?.messages)
 				setIsUpdateMessage(true)
 				setOpenModal(false)
 			})
@@ -250,27 +245,30 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 	}
 
 	useEffect(() => {
-		if (!isUpdateMessage) return
+		if (!isUpdateMessage || (isScript1 && !isDoneSignal)) return
 		function startTimer(_messages: string[]) {
 			let i = 0
-			myTimer.current = setInterval(() => {
+
+			const runResponse = () => {
 				if (i < _messages.length) {
 					const batchSize = Math.floor(Math.random() * 5) + 3
 					const batch = _messages.slice(i, i + batchSize)
 					setMessageBatch((prevBatches) => [...prevBatches, batch])
 					i += batchSize
+					myTimer.current = setTimeout(runResponse, 350)
 				} else {
-					if (myTimer?.current) clearInterval(myTimer.current)
+					if (myTimer?.current) clearTimeout(myTimer.current)
 					setIsLoading(false)
 				}
 				scrollToBottom()
-			}, 250)
+			}
+			myTimer.current = setTimeout(runResponse, 350)
 		}
 		startTimer(messages)
 		return () => {
-			if (myTimer?.current) return clearInterval(myTimer.current)
+			if (myTimer?.current) return clearTimeout(myTimer.current)
 		}
-	}, [isUpdateMessage, messages])
+	}, [isUpdateMessage, isDoneSignal, messages])
 
 	return (
 		<Fragment>
@@ -297,11 +295,11 @@ const ScriptAction = ({ mutation, title, label }: ScriptActionProps) => {
 								<Divider />
 							</Stack>
 							<ScrollArea.Autosize maxHeight={300} viewportRef={viewport}>
-								<Stack sx={{ minHeight: 100 }}>
+								<Stack sx={{ minHeight: 100 }} spacing={0}>
 									{messageBatch?.map((batch, index) => (
-										<Stack spacing={1} key={index}>
+										<Stack spacing={0} key={index}>
 											{batch?.map((message, messageIndex) => (
-												<p key={messageIndex}>{message}</p>
+												<div key={messageIndex}>{message}</div>
 											))}
 										</Stack>
 									))}
