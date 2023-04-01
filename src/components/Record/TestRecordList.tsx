@@ -24,7 +24,13 @@ const TestRecordList = ({
 }
 
 const TestRecordRow = ({ item }: { item: HistoryTestRecord }) => (
-	<Paper key={item.id} withBorder={true} shadow="sm" p="sm">
+	<Paper
+		key={item.id}
+		withBorder={true}
+		shadow="sm"
+		p="sm"
+		sx={{ background: 'white' }}
+	>
 		<Stack>
 			<Group position="apart" grow>
 				<Text weight={500}>{item.operationName}</Text>
@@ -39,12 +45,12 @@ const TestRecordRow = ({ item }: { item: HistoryTestRecord }) => (
 					Xem chi tiết
 				</Button>
 			</Group>
-			<RowWithLabel label="Bác sĩ xét nghiệm" content={item.doctorName} />
+			<RowWithLabel label="Bác sĩ xét nghiệm" content={item.doctorName} isOdd />
 			<RowWithLabel
 				label="Địa điểm"
 				content={`Phòng ${item.roomNumber} - Tầng ${item.floor}`}
 			/>
-			<RowWithLabel label="Thời gian" content={formatDate(item.date)} />
+			<RowWithLabel label="Thời gian" content={formatDate(item.date)} isOdd />
 			<RowWithLabel
 				label="Kết quả tổng quát"
 				content={item?.resultDescription ?? '---'}

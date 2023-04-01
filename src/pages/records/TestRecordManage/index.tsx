@@ -31,8 +31,8 @@ import {
 	useGetTestRecordsQuery,
 } from '@/store/record/api'
 import { TestRecord } from '@/entities/record'
-import { translateCheckupRecordStatus } from '@/utils/enums'
-import { formatDate, formatUTCDate } from '@/utils/formats'
+import { translateTestRecordStatus } from '@/utils/enums'
+import { formatDate } from '@/utils/formats'
 import { IconChevronRight } from '@tabler/icons'
 import { useAppSelector } from '@/store/hooks'
 import { selectTime } from '@/store/configs/selectors'
@@ -107,7 +107,7 @@ const TestRecordManage = () => {
 			}}
 		>
 			<td>
-				<Text align="center">{row.numericalOrder}</Text>
+				<Text align="center">{row?.numericalOrder ?? '---'}</Text>
 			</td>
 			<td>
 				<Text
@@ -130,7 +130,7 @@ const TestRecordManage = () => {
 						overflow: 'hidden',
 					}}
 				>
-					{translateCheckupRecordStatus(row.status)}
+					{translateTestRecordStatus(row.status)}
 				</Text>
 			</td>
 

@@ -32,7 +32,7 @@ export interface CheckupListGetRequest {
 export interface TestRecord {
 	id: number
 	date: string
-	numericalOrder: number
+	numericalOrder?: number
 	doctor: string
 	status: number
 	patientName: string

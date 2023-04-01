@@ -111,14 +111,14 @@ const Statistic = () => {
 
 	const bookViaAppVsAnonymous =
 		Math.round(
-			((data?.appUserCount ?? 0) /
-				((data?.appUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
+			((data?.phoneUserCount ?? 0) /
+				((data?.phoneUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
 				100
 		) || 0
 	const bookAnonymousVsViaApp =
 		Math.round(
 			((data?.annonymousCount ?? 0) /
-				((data?.appUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
+				((data?.phoneUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
 				100
 		) || 0
 
@@ -175,7 +175,7 @@ const Statistic = () => {
 													<Text size="xs">Tổng cộng</Text>
 													<Text size="xl" weight="bold">
 														{(data?.annonymousCount ?? 0) +
-															(data?.appUserCount ?? 0)}
+															(data?.phoneUserCount ?? 0)}
 													</Text>
 												</Stack>
 											}
@@ -191,7 +191,7 @@ const Statistic = () => {
 										<Group position="apart">
 											<Box>
 												<Badge variant="dot" size="lg" fullWidth>
-													mobile app ({data?.appUserCount ?? 0} người)
+													mobile app ({data?.phoneUserCount ?? 0} người)
 												</Badge>
 											</Box>
 											<Text>{bookViaAppVsAnonymous}%</Text>

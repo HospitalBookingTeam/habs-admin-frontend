@@ -26,9 +26,10 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 				<RowWithLabel label="Triệu chứng" content={data?.clinicalSymptom} />
 				<RowWithLabel
 					label="Chẩn đoán"
-					content={data?.icdDiseases
-						?.map((item) => item.icdDiseaseName)
-						?.join(', ')}
+					content={
+						data?.icdDiseases?.map((item) => item.icdDiseaseName)?.join(', ') ||
+						'---'
+					}
 					isOdd
 				/>
 
@@ -58,13 +59,13 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 				<RowWithLabel
 					labelSpan={3}
 					label="Chẩn đoán cận lâm sàng"
-					content={data?.diagnosis?.toString() ?? '---'}
+					content={data?.diagnosis?.toString() || '---'}
 					isOdd
 				/>
 				<RowWithLabel
 					labelSpan={3}
 					label="Lời khuyên bác sĩ"
-					content={data?.doctorAdvice?.toString() ?? '---'}
+					content={data?.doctorAdvice?.toString() || '---'}
 				/>
 			</Stack>
 		</Stack>

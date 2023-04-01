@@ -27,8 +27,8 @@ export const sortData = (
 
 			return num_sort_b - num_sort_a
 		}
-		const _a = a[sortBy].toString()
-		const _b = b[sortBy].toString()
+		const _a = a[sortBy]?.toString() ?? '---'
+		const _b = b[sortBy]?.toString() ?? '---'
 
 		if (payload.reversed) {
 			return _b.localeCompare(_a)
