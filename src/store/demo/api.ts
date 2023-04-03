@@ -111,6 +111,15 @@ export const configApi = api.injectEndpoints({
 				maxRetries: 1,
 			},
 		}),
+		remindToFollowup: build.mutation<void, void>({
+			query: () => ({
+				url: 'test/fire-reexam-remind-test',
+				method: 'GET',
+			}),
+			extraOptions: {
+				maxRetries: 1,
+			},
+		}),
 		getNow: build.query<string, void>({
 			query: () => ({
 				url: 'test/now',
@@ -145,6 +154,7 @@ export const {
 	useScript9Mutation,
 	useGetNowQuery,
 	useChangeNowMutation,
+	useRemindToFollowupMutation,
 } = configApi
 
 export const {

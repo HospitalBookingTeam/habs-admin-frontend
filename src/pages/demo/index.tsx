@@ -1,6 +1,7 @@
 import {
 	useChangeNowMutation,
 	useGetNowQuery,
+	useRemindToFollowupMutation,
 	useScript1Mutation,
 	useScript2Mutation,
 	useScript3Mutation,
@@ -37,6 +38,8 @@ const DemoScript = () => {
 	const [time, setTime] = useState<Date | null>(new Date())
 	const { data: now, isSuccess: isNowSuccess } = useGetNowQuery()
 	const [mutateNow, { isLoading: isLoadingNow }] = useChangeNowMutation()
+	const [remindToFollowup, { isLoading: isLoadingRemind }] =
+		useRemindToFollowupMutation()
 
 	useEffect(() => {
 		if (isNowSuccess) {
@@ -47,6 +50,24 @@ const DemoScript = () => {
 	const updateNow = async () => {
 		if (!time) return
 		await mutateNow(`${formatDate(time.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`)
+			.unwrap()
+			.then(() => {
+				showNotification({
+					title: 'Thành công',
+					message: <></>,
+				})
+			})
+			.catch((error) => {
+				showNotification({
+					title: 'Không thành công',
+					message: <></>,
+					color: 'red',
+					autoClose: 5000,
+				})
+			})
+	}
+	const HandleRemindToFollowUp = async () => {
+		await remindToFollowup()
 			.unwrap()
 			.then(() => {
 				showNotification({
@@ -148,6 +169,20 @@ const DemoScript = () => {
 				{scripts.map((item) => (
 					<ScriptAction {...item} key={item.scriptId} />
 				))}
+
+				<Paper p="md" sx={{ background: 'white' }}>
+					<Group align="end">
+						<Stack sx={{ flex: 1 }} align="start">
+							<Text weight={500}>Thực hiện hẹn tái khám</Text>
+							<Button
+								onClick={HandleRemindToFollowUp}
+								loading={isLoadingRemind}
+							>
+								Hẹn nhắc tái khám
+							</Button>
+						</Stack>
+					</Group>
+				</Paper>
 			</Stack>
 		</Container>
 	)
