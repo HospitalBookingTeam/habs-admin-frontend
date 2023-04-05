@@ -15,7 +15,7 @@ import {
 	useMantineTheme,
 } from '@mantine/core'
 import { DatePicker } from '@mantine/dates'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'dayjs/locale/vi'
 import { IconCalendar } from '@tabler/icons'
 import { useAppSelector } from '@/store/hooks'
@@ -121,6 +121,10 @@ const Statistic = () => {
 				((data?.phoneUserCount ?? 0) + (data?.annonymousCount ?? 0) ?? 1)) *
 				100
 		) || 0
+
+	useEffect(() => {
+		setValue(new Date(dayjs().valueOf() + (configTime ?? 0)))
+	}, [configTime])
 
 	return (
 		<Paper sx={{ background: 'transparent' }}>

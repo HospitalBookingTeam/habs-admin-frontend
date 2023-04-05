@@ -28,6 +28,7 @@ import { selectAuth } from '@/store/auth/selectors'
 import { useMediaQuery, useViewportSize } from '@mantine/hooks'
 import { persistor } from '@/store'
 import { clearConfig } from '@/store/configs/slice'
+import { useLazyClearCacheQuery } from '@/store/configs/api'
 
 const useStyles = createStyles((theme, _params, getRef) => {
 	const icon: string = getRef('icon')
@@ -138,6 +139,7 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const authData = useAppSelector(selectAuth)
+	const [triggerClearCache] = useLazyClearCacheQuery()
 
 	const theme = useMantineTheme()
 	const matches = useMediaQuery(`(max-width: ${theme.breakpoints.lg}px)`)
@@ -175,9 +177,11 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 		>
 			<Navbar.Section grow>
 				<Stack>
-					<Text size="lg" align="center" weight="bolder">
-						Admin
-					</Text>
+					<UnstyledButton onClick={async () => triggerClearCache()}>
+						<Text size="lg" align="center" weight="bolder">
+							Admin
+						</Text>
+					</UnstyledButton>
 					<Divider />
 					<Stack spacing={'xs'}>{links}</Stack>
 				</Stack>

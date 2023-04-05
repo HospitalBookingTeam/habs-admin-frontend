@@ -86,6 +86,11 @@ export const configApi = api.injectEndpoints({
 				body: body.data,
 			}),
 		}),
+		clearCache: build.query<void, void>({
+			query: () => ({
+				url: 'test/clear-cache',
+			}),
+		}),
 	}),
 })
 
@@ -97,6 +102,7 @@ export const {
 	useUpdateScheduleMutation,
 	useLazyDownloadOperationPriceQuery,
 	useUpdateOperationPriceMutation,
+	useLazyClearCacheQuery,
 } = configApi
 
 export const {
