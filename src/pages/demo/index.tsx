@@ -33,6 +33,7 @@ import DateTimePicker from '@/components/TimePicker'
 import dayjs from 'dayjs'
 import { formatDate } from '@/utils/formats'
 import { IScriptResponse } from '@/entities/script'
+import { DatePicker } from '@mantine/dates'
 
 const DemoScript = () => {
 	const [time, setTime] = useState<Date | null>(new Date())
@@ -91,12 +92,14 @@ const DemoScript = () => {
 			mutation: useScript1Mutation,
 			title: 'Đặt lịch cho ngẫu nhiên X người',
 			label: 'Script 1',
+			showDate: true,
 		},
 		{
 			scriptId: '2',
 			mutation: useScript2Mutation,
 			title: 'Thanh toán cho ngẫu nhiên X bệnh nhân đã đặt lịch khám',
 			label: 'Script 2',
+			showDate: true,
 		},
 		{
 			scriptId: '3',
@@ -193,12 +196,14 @@ type ScriptActionProps = {
 	title: string
 	label: string
 	scriptId: string
+	showDate?: boolean
 }
 const ScriptAction = ({
 	mutation,
 	title,
 	label,
 	scriptId,
+	showDate = false,
 }: ScriptActionProps) => {
 	const isScript1 = scriptId === '1'
 	const { classes } = useGlobalStyles()
@@ -221,6 +226,7 @@ const ScriptAction = ({
 	const form = useForm({
 		initialValues: {
 			num: 1,
+			date: '',
 		},
 
 		validate: {
@@ -253,14 +259,20 @@ const ScriptAction = ({
 		}
 		setTimeout(runResponse, 750)
 	}
-
-	const handleSubmit = async (values: { num: number }) => {
+	console.log('form.values', form.values)
+	const handleSubmit = async (values: { num: number; date: string }) => {
 		setOpenModal(false)
 
 		setIsUpdateMessage(false)
 		setIsLoading(true)
 		runSignal(values.num)
-		await mutate(values.num)
+		const params = showDate
+			? {
+					quantity: values.num,
+					date: `${formatDate(values.date.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`,
+			  }
+			: { quantity: values.num }
+		await mutate(params)
 			.unwrap()
 			.then((resp) => {
 				const result = resp as IScriptResponse
@@ -313,6 +325,7 @@ const ScriptAction = ({
 						<Text weight={500} sx={{ maxWidth: 700 }}>
 							{title}
 						</Text>
+
 						<Button
 							onClick={() => {
 								setOpenModal(true)
@@ -354,6 +367,14 @@ const ScriptAction = ({
 				title={title}
 			>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
+					{showDate && (
+						<DatePicker
+							locale="vi"
+							label="Chọn thời gian"
+							{...form.getInputProps('date')}
+							sx={{ flex: 1, maxWidth: 300 }}
+						/>
+					)}
 					<NumberInput
 						label={label}
 						data-autofocus

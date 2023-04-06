@@ -17,6 +17,8 @@ import { CalendarSharedProps } from '@mantine/dates/lib/components/CalendarBase/
 import { FirstDayOfWeek } from '@mantine/dates/lib/types'
 import { IconClock } from '@tabler/icons'
 import 'dayjs/locale/vi'
+import { useAppSelector } from '@/store/hooks'
+import { selectTime } from '@/store/configs/selectors'
 
 export interface DateTimePickerProps
 	extends Omit<DatePickerBaseSharedProps, 'onChange'>,
@@ -186,6 +188,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
 		)
 		const [_hideNow, setHideNow] = useState(hideNow)
 
+		const configTime = useAppSelector(selectTime)
 		const closeDropdown = () => {
 			setDropdownOpened(false)
 			onDropdownClose?.()
@@ -288,7 +291,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
 		}
 
 		const handleNow = () => {
-			const now = new Date()
+			const now = new Date(dayjs().valueOf() + (configTime ?? 0))
 			setValue(now)
 			setInputState(
 				upperFirst(dayjs(value).locale(finalLocale).format(dateFormat))
