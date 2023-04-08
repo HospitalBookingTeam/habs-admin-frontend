@@ -3,6 +3,7 @@ import { formatDate } from '@/utils/formats'
 import { Button, Group, Stack, Title } from '@mantine/core'
 import { IconExternalLink } from '@tabler/icons'
 import RowWithLabel from '../Row'
+import { TestRecordStatus } from '@/utils/enums'
 
 const TestRecordItem = ({
 	data,
@@ -11,6 +12,9 @@ const TestRecordItem = ({
 	data?: HistoryTestRecord
 	showTitle?: boolean
 }) => {
+	const showFail =
+		data?.status === TestRecordStatus.DA_HUY && !!data?.failReason
+
 	return (
 		<Stack>
 			<Group position="apart" grow>
@@ -28,6 +32,7 @@ const TestRecordItem = ({
 					target="_blank"
 					variant="subtle"
 					leftIcon={<IconExternalLink size={14} />}
+					disabled={showFail}
 				>
 					Xem chi tiết
 				</Button>
@@ -43,11 +48,20 @@ const TestRecordItem = ({
 				label="Thời gian"
 				content={data?.date ? formatDate(data.date) : '---'}
 			/>
-			<RowWithLabel
-				label="Kết quả tổng quát"
-				content={data?.resultDescription ?? '---'}
-				isOdd
-			/>
+
+			{showFail ? (
+				<RowWithLabel
+					label="Lý do hủy"
+					content={data?.failReason ?? '---'}
+					isOdd
+				/>
+			) : (
+				<RowWithLabel
+					label="Kết quả tổng quát"
+					content={data?.resultDescription ?? '---'}
+					isOdd
+				/>
+			)}
 
 			{!!data?.resultFileLink && (
 				<Stack sx={{ position: 'relative' }}>

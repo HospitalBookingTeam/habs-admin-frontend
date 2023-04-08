@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useGetTestRecordByIdQuery } from '@/store/record/api'
 import PatientInfo from './PatientInfo'
 import TestRecordItem from '@/components/Record/TestRecordItem'
+import { TestRecordStatus } from '@/utils/enums'
 
 const FinishQueueDetail = () => {
 	const { id } = useParams()

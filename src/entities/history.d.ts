@@ -64,4 +64,5 @@ export interface HistoryTestRecord {
 	doctorName: string
 	qrCode: string
 	resultDescription?: any
+	failReason?: string
 }

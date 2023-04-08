@@ -214,6 +214,7 @@ const ScriptAction = ({
 	const [messageBatch, setMessageBatch] = useState<string[][]>([])
 	const [isUpdateMessage, setIsUpdateMessage] = useState(false)
 	const [isDoneSignal, setIsDoneSignal] = useState(false)
+	const { data: now, isSuccess: isNowSuccess } = useGetNowQuery()
 
 	const myTimer = useRef<NodeJS.Timer | null>(null)
 	const viewport = useRef<HTMLDivElement>(null)
@@ -223,10 +224,10 @@ const ScriptAction = ({
 			behavior: 'smooth',
 		})
 
-	const form = useForm({
+	const form = useForm<{ num: number; date?: Date }>({
 		initialValues: {
 			num: 1,
-			date: '',
+			date: undefined,
 		},
 
 		validate: {
@@ -259,19 +260,23 @@ const ScriptAction = ({
 		}
 		setTimeout(runResponse, 750)
 	}
-	console.log('form.values', form.values)
-	const handleSubmit = async (values: { num: number; date: string }) => {
+
+	const handleSubmit = async (values: { num: number; date?: Date }) => {
 		setOpenModal(false)
 
 		setIsUpdateMessage(false)
 		setIsLoading(true)
 		runSignal(values.num)
-		const params = showDate
-			? {
-					quantity: values.num,
-					date: `${formatDate(values.date.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`,
-			  }
-			: { quantity: values.num }
+		const params =
+			showDate && !!values?.date
+				? {
+						quantity: values.num,
+						date: `${formatDate(
+							values.date.toString(),
+							'YYYY-MM-DDTHH:mm:ss'
+						)}Z`,
+				  }
+				: { quantity: values.num }
 		await mutate(params)
 			.unwrap()
 			.then((resp) => {
@@ -316,6 +321,12 @@ const ScriptAction = ({
 			if (myTimer?.current) return clearTimeout(myTimer.current)
 		}
 	}, [isUpdateMessage, isDoneSignal, messages])
+
+	useEffect(() => {
+		if (isNowSuccess) {
+			form.setValues({ ...form.values, date: dayjs(now).toDate() })
+		}
+	}, [isNowSuccess])
 
 	return (
 		<Fragment>
@@ -362,7 +373,7 @@ const ScriptAction = ({
 				centered={true}
 				onClose={() => {
 					setOpenModal(false)
-					form.reset()
+					form.setValues({ num: 1, date: dayjs(now).toDate() })
 				}}
 				title={title}
 			>
