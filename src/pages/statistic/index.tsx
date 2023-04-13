@@ -63,7 +63,7 @@ const Statistic = () => {
 			color: 'cyan',
 		},
 		{
-			value: data?.testPaidCount,
+			value: data?.testArrangedCount,
 			label: 'Đợi xét nghiệm',
 			color: 'grape',
 		},
@@ -91,7 +91,7 @@ const Statistic = () => {
 		},
 		{
 			value: data?.testRecords?.resultFilledCount,
-			label: 'Hoàn thành khám bệnh',
+			label: 'Hoàn thành xét nghiệm',
 			color: colors.green[2],
 		},
 	]
