@@ -8,6 +8,7 @@ import {
 import { Room } from '@/entities/room'
 import { api } from '../api'
 import { IStatistics } from '@/entities/statistics'
+import { ReExamTree } from '@/entities/reexam'
 
 export const recordApi = api.injectEndpoints({
 	endpoints: (build) => ({
@@ -94,6 +95,22 @@ export const recordApi = api.injectEndpoints({
 				params,
 			}),
 		}),
+		getReExamTree: build.query<ReExamTree, string>({
+			query: (id) => ({
+				url: `re-exam-tree/${id}`,
+			}),
+		}),
+		getReExamTreeByPatientId: build.query<ReExamTree[], string>({
+			query: (id) => ({
+				url: `re-exam-tree/patient/${id}`,
+			}),
+			providesTags: (result = []) => [
+				...result.map(
+					({ id }) => ({ type: 'Record', field: 'reExamTree', id } as const)
+				),
+				{ type: 'Record' as const, patient: true, id: 'ListReExamTree' },
+			],
+		}),
 	}),
 })
 
@@ -105,6 +122,8 @@ export const {
 	useGetRoomListQuery,
 	useGetExamRoomListQuery,
 	useGetStatisticsQuery,
+	useGetReExamTreeByPatientIdQuery,
+	useGetReExamTreeQuery,
 } = recordApi
 
 export const {

@@ -19,14 +19,11 @@ const FinishQueueDetail = () => {
 	return (
 		<Stack align={'start'}>
 			<Box sx={{ width: '100%' }}>
+				<Title order={3} mb="md">
+					Kết quả xét nghiệm
+				</Title>
 				<Paper p="md" sx={{ backgroundColor: 'white' }}>
 					<Stack>
-						<Group mt="sm">
-							<Title order={3} size="h4">
-								{data?.operationName ?? '---'}
-							</Title>
-						</Group>
-						<Divider />
 						<PatientInfo data={data} />
 						<Divider />
 						<TestRecordItem data={data} />

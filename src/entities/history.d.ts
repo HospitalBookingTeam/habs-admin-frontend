@@ -44,6 +44,7 @@ export interface HistoryCheckupRecord {
 	reExam?: any
 	roomNumber?: string
 	floor?: string
+	code?: string
 }
 
 export interface HistoryTestRecord {
@@ -65,4 +66,5 @@ export interface HistoryTestRecord {
 	qrCode: string
 	resultDescription?: any
 	failReason?: string
+	code?: string
 }

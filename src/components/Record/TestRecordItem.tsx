@@ -37,29 +37,26 @@ const TestRecordItem = ({
 					Xem chi tiết
 				</Button>
 			</Group>
-			<RowWithLabel label="Tên xét nghiệm" content={data?.operationName} />
+			<RowWithLabel label="Mã số" content={data?.code ?? '---'} />
 			<RowWithLabel
-				label="Bác sĩ xét nghiệm"
-				content={data?.doctorName}
+				label="Tên xét nghiệm"
+				content={data?.operationName}
 				isOdd
 			/>
+			<RowWithLabel label="Bác sĩ xét nghiệm" content={data?.doctorName} />
 
 			<RowWithLabel
 				label="Thời gian"
 				content={data?.date ? formatDate(data.date) : '---'}
+				isOdd
 			/>
 
 			{showFail ? (
-				<RowWithLabel
-					label="Lý do hủy"
-					content={data?.failReason ?? '---'}
-					isOdd
-				/>
+				<RowWithLabel label="Lý do hủy" content={data?.failReason ?? '---'} />
 			) : (
 				<RowWithLabel
 					label="Kết quả tổng quát"
 					content={data?.resultDescription ?? '---'}
-					isOdd
 				/>
 			)}
 

@@ -10,10 +10,7 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 			</Title>
 
 			<Stack>
-				<RowWithLabel
-					label="Tình trạng"
-					content={data?.isReExam ? 'Tái khám' : 'Khám mới'}
-				/>
+				<RowWithLabel label="Mã số" content={data?.code ?? '---'} />
 				<RowWithLabel label="Khoa" content={data?.departmentName} isOdd />
 				<RowWithLabel label="Bác sĩ" content={data?.doctorName} />
 				<RowWithLabel

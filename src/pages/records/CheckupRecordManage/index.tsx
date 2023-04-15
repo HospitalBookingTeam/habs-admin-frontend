@@ -90,6 +90,7 @@ const PatientManage = () => {
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.currentTarget
+		setPage(1)
 		setSearch(value)
 	}
 
@@ -98,6 +99,13 @@ const PatientManage = () => {
 			setSortedData(data.data)
 		}
 	}, [isSuccess, data])
+
+	useEffect(() => {
+		setDateRange([
+			new Date(dayjs().valueOf() + (configTime ?? 0)),
+			new Date(dayjs().valueOf() + (configTime ?? 0)),
+		])
+	}, [configTime])
 
 	const rows = sortedData?.map((row, index) => (
 		<tr
