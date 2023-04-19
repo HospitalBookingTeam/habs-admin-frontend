@@ -25,6 +25,10 @@ const GlobalStyles = () => {
 				'.mantine-Modal-title': {
 					fontWeight: 700,
 				},
+				'tr.row-link:hover': {
+					cursor: 'pointer',
+					backgroundColor: `${theme.colors.green[0]} !important`,
+				},
 			})}
 		/>
 	)

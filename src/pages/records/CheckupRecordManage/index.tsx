@@ -10,12 +10,14 @@ import {
 	Text,
 	ActionIcon,
 	useMantineTheme,
+	Badge,
 } from '@mantine/core'
 import { pageSize } from './items'
 import {
 	formatRoomOptions,
+	mapColorToStatus,
 	sortData,
-	statusToExludeListDefaultValues,
+	// statusToExludeListDefaultValues,
 	statusToIncludeList,
 } from './utils'
 import {
@@ -44,9 +46,8 @@ const PatientManage = () => {
 	const [sortedData, setSortedData] = useState<CheckupRecord[] | null>(null)
 	const [sortBy, setSortBy] = useState<keyof CheckupRecord | null>(null)
 	const [reverseSortDirection, setReverseSortDirection] = useState(false)
-	const [statusToExclude, setStatusToExclude] = useState<string[]>(
-		statusToExludeListDefaultValues
-	)
+	const [statusToExclude, setStatusToExclude] = useState<string[]>()
+	// statusToExludeListDefaultValues
 	const configTime = useAppSelector(selectTime)
 
 	const [statusToInclude, setStatusToInclude] = useState<string[] | null>(null)
@@ -113,6 +114,10 @@ const PatientManage = () => {
 			style={{
 				background: index % 2 === 0 ? 'transparent' : theme.colors.gray[1],
 			}}
+			className="row-link"
+			onClick={() => {
+				window.open(`manage/${row.id}`, '_blank')
+			}}
 		>
 			<td>
 				<Text align="center">{row.numericalOrder}</Text>
@@ -131,15 +136,16 @@ const PatientManage = () => {
 			<td>{row.doctorName}</td>
 
 			<td>
-				<Text
+				<Badge
 					sx={{
 						textOverflow: 'ellipsis',
 						whiteSpace: 'nowrap',
 						overflow: 'hidden',
 					}}
+					color={mapColorToStatus(row.status)}
 				>
 					{translateCheckupRecordStatus(row.status)}
-				</Text>
+				</Badge>
 			</td>
 			<td>{`${row.roomNumber} tầng ${row.floor}`}</td>
 			<td>
@@ -147,18 +153,6 @@ const PatientManage = () => {
 			</td>
 			<td>
 				<Text>{row?.date ? formatDate(row.date) : '---'}</Text>
-			</td>
-			<td>
-				<ActionIcon
-					variant="filled"
-					color="green"
-					component="a"
-					href={`records/${row.id}`}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<IconChevronRight />
-				</ActionIcon>
 			</td>
 		</tr>
 	))
@@ -175,7 +169,7 @@ const PatientManage = () => {
 						onChange={setDateRange}
 					/>
 				</Group>
-				<Group>
+				<Group align="start">
 					<Box sx={{ flex: 1 }}>
 						<CustomMultiSelect
 							data={formatRoomOptions(roomList)}
@@ -259,7 +253,6 @@ const PatientManage = () => {
 							>
 								Thời gian
 							</Th>
-							<th style={{ width: 50 }}></th>
 						</tr>
 					</thead>
 					<tbody>

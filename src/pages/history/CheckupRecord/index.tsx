@@ -31,8 +31,8 @@ const RecordHistory = () => {
 	)
 
 	const { data: reExamTree, isLoading: isLoadingReExamTree } =
-		useGetReExamTreeQuery(recordData?.id?.toString() as string, {
-			skip: !recordData?.id || activeTab !== 'reExamTree',
+		useGetReExamTreeQuery(recordData?.reExamTreeCode?.toString() as string, {
+			skip: !recordData?.reExamTreeCode || activeTab !== 'reExamTree',
 		})
 
 	return (

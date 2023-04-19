@@ -11,7 +11,6 @@ import {
 	Badge,
 } from '@mantine/core'
 import { useSpotlight } from '@mantine/spotlight'
-import { IconSearch } from '@tabler/icons'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Clock from '../Clock'
@@ -23,7 +22,7 @@ const useStyles = createStyles((theme) => ({
 		top: 0,
 		width: '100%',
 		height: 40,
-		zIndex: 999,
+		zIndex: 99,
 		borderBottom: `1px solid ${theme.colors.gray[2]}`,
 	},
 

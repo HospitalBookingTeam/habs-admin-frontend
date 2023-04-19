@@ -42,10 +42,10 @@ export const CHECKUP_TRANSLATION: {
 } = {
 	CHO_TAI_KHAM: 'Chờ tái khám',
 	DA_DAT_LICH: 'Đã đặt lịch',
-	DA_THANH_TOAN: 'Đã thanh toán',
+	DA_THANH_TOAN: 'Đã đặt lịch',
 	CHECKED_IN: 'Đã checkin',
 	DANG_KHAM: 'Đang khám',
-	CHO_THANH_TOAN_XN: 'Chờ thanh toán phí xét nghiệm',
+	CHO_THANH_TOAN_XN: 'Đã chỉ định xét nghiệm',
 	CHECKED_IN_SAU_XN: 'Đã checkin sau xét nghiệm',
 	CHO_KET_QUA_XN: 'Đợi xét nghiệm',
 	DA_CO_KET_QUA_XN: 'Đã có KQXN',
@@ -64,9 +64,9 @@ export const CHECKUP_TRANSLATION_RE_EXAM: {
 	DA_DAT_LICH: 'Đã đặt lịch',
 	CHECKED_IN: 'Đã checkin',
 	DANG_KHAM: 'Đang khám',
-	CHO_THANH_TOAN_XN: 'Chờ thanh toán phí xét nghiệm',
+	CHO_THANH_TOAN_XN: 'Đã chỉ định xét nghiệm',
 	CHECKED_IN_SAU_XN: 'Đã checkin sau xét nghiệm',
-	CHO_KET_QUA_XN: 'Đợi xét nghiệm',
+	CHO_KET_QUA_XN: 'Đang xét nghiệm',
 	DA_CO_KET_QUA_XN: 'Đã có KQXN (tái khám)',
 	KET_THUC: 'Kết thúc',
 	CHUYEN_KHOA: 'Chuyển khoa',
@@ -117,3 +117,20 @@ export const translateTestRecordStatus = (status: number) =>
 	TEST_RECORD_TRANSLATION[
 		TestRecordStatus[status] as keyof typeof TestRecordStatus
 	]
+
+export enum SessionType {
+	SANG,
+	CHIEU,
+	TOI,
+}
+
+export const SESSION_TRANSLATION: {
+	[key in keyof typeof SessionType]: string
+} = {
+	SANG: 'Sáng',
+	CHIEU: 'Chiều',
+	TOI: 'Tối',
+}
+
+export const translateSession = (status: number) =>
+	SESSION_TRANSLATION[SessionType[status] as keyof typeof SessionType]

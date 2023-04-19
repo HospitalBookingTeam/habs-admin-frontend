@@ -1,5 +1,6 @@
 import { ConfigItem, ConfigRequest } from '@/entities/config'
 import { api } from '../api'
+import { IScheduleDoctor, IScheduleSlotOfDoctor } from '@/entities/schedule'
 
 export const configApi = api.injectEndpoints({
 	endpoints: (build) => ({
@@ -91,6 +92,21 @@ export const configApi = api.injectEndpoints({
 				url: 'test/clear-cache',
 			}),
 		}),
+		getScheduleByDoctor: build.query<IScheduleDoctor[], { date?: string }>({
+			query: (params) => ({
+				url: 'schedule/doctor',
+				params,
+			}),
+		}),
+		getSlotsByDoctor: build.query<
+			IScheduleSlotOfDoctor[],
+			{ date?: string; doctorId: string }
+		>({
+			query: (params) => ({
+				url: 'schedule/slots-for-doctor',
+				params,
+			}),
+		}),
 	}),
 })
 
@@ -103,6 +119,8 @@ export const {
 	useLazyDownloadOperationPriceQuery,
 	useUpdateOperationPriceMutation,
 	useLazyClearCacheQuery,
+	useLazyGetScheduleByDoctorQuery,
+	useLazyGetSlotsByDoctorQuery,
 } = configApi
 
 export const {

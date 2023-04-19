@@ -31,6 +31,7 @@ const ManageRecords = lazy(() => import('@/pages/records'))
 const DemoScript = lazy(() => import('@/pages/demo'))
 const ImportData = lazy(() => import('@/pages/import-data'))
 const Statistics = lazy(() => import('@/pages/statistic'))
+const Schedule = lazy(() => import('@/pages/schedule'))
 
 const App = () => {
 	const isAuthenticated = useAppSelector(selectIsAuthenticated)
@@ -95,6 +96,7 @@ const App = () => {
 							</Route>
 							<Route path="import" element={<ImportData />} />
 							<Route path="configs" element={<ConfigContainer />} />
+							<Route path="schedule" element={<Schedule />} />
 						</Route>
 					</Route>
 					<Route path="/login" element={<IsUserRedirect />}>

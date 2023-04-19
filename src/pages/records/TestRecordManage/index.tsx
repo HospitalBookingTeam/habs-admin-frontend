@@ -10,12 +10,14 @@ import {
 	Text,
 	ActionIcon,
 	useMantineTheme,
+	Badge,
 } from '@mantine/core'
 import { pageSize } from './items'
 import {
 	formatRoomOptions,
+	mapColorToStatus,
 	sortData,
-	statusToExludeListDefaultValues,
+	// statusToExludeListDefaultValues,
 	statusToIncludeList,
 } from './utils'
 import {
@@ -44,9 +46,8 @@ const TestRecordManage = () => {
 	const [sortedData, setSortedData] = useState<TestRecord[] | null>(null)
 	const [sortBy, setSortBy] = useState<keyof TestRecord | null>(null)
 	const [reverseSortDirection, setReverseSortDirection] = useState(false)
-	const [statusToExclude, setStatusToExclude] = useState<string[]>(
-		statusToExludeListDefaultValues
-	)
+	const [statusToExclude, setStatusToExclude] = useState<string[]>()
+	// statusToExludeListDefaultValues
 	const [statusToInclude, setStatusToInclude] = useState<string[] | null>(null)
 	const [totalPageSize, setTotalPageSize] = useState<string | null>(pageSize[0])
 	const [page, setPage] = useState(1)
@@ -113,6 +114,7 @@ const TestRecordManage = () => {
 			style={{
 				background: index % 2 === 0 ? 'transparent' : theme.colors.gray[1],
 			}}
+			className="row-link"
 		>
 			<td>
 				<Text align="center">{row?.numericalOrder ?? '---'}</Text>
@@ -131,31 +133,20 @@ const TestRecordManage = () => {
 			<td>{row.operationName}</td>
 			<td>{`${row.roomNumber} tầng ${row.floor}`}</td>
 			<td>
-				<Text
+				<Badge
 					sx={{
 						textOverflow: 'ellipsis',
 						whiteSpace: 'nowrap',
 						overflow: 'hidden',
 					}}
+					color={mapColorToStatus(row.status)}
 				>
 					{translateTestRecordStatus(row.status)}
-				</Text>
+				</Badge>
 			</td>
 
 			<td>
 				<Text>{row?.date ? formatDate(row.date) : '---'}</Text>
-			</td>
-			<td>
-				<ActionIcon
-					variant="filled"
-					color="green"
-					component="a"
-					href={`tests/${row.id}`}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<IconChevronRight />
-				</ActionIcon>
 			</td>
 		</tr>
 	))
@@ -172,7 +163,7 @@ const TestRecordManage = () => {
 						onChange={setDateRange}
 					/>
 				</Group>
-				<Group>
+				<Group align="start">
 					<Box sx={{ flex: 1 }}>
 						<CustomMultiSelect
 							data={formatRoomOptions(roomList)}
@@ -249,7 +240,6 @@ const TestRecordManage = () => {
 							>
 								Thời gian
 							</Th>
-							<th style={{ width: 50 }}></th>
 						</tr>
 					</thead>
 					<tbody>

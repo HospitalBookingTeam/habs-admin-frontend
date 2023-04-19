@@ -94,17 +94,17 @@ const DemoScript = () => {
 			label: 'Script 1',
 			showDate: true,
 		},
-		{
-			scriptId: '2',
-			mutation: useScript2Mutation,
-			title: 'Thanh toán cho ngẫu nhiên X bệnh nhân đã đặt lịch khám',
-			label: 'Script 2',
-			showDate: true,
-		},
+		// {
+		// 	scriptId: '2',
+		// 	mutation: useScript2Mutation,
+		// 	title: 'Thanh toán cho ngẫu nhiên X bệnh nhân đã đặt lịch khám',
+		// 	label: 'Script 2',
+		// 	showDate: true,
+		// },
 		{
 			scriptId: '3',
 			mutation: useScript3Mutation,
-			title: 'Checkin cho ngẫu nhiên X người đã thanh toán',
+			title: 'Checkin cho ngẫu nhiên X người đã đặt lịch',
 			label: 'Script 3',
 		},
 		{
@@ -169,8 +169,8 @@ const DemoScript = () => {
 						</Stack>
 					</Group>
 				</Paper>
-				{scripts.map((item) => (
-					<ScriptAction {...item} key={item.scriptId} />
+				{scripts.map((item, idx) => (
+					<ScriptAction {...item} order={idx + 1} key={item.scriptId} />
 				))}
 
 				<Paper p="md" sx={{ background: 'white' }}>
@@ -197,6 +197,7 @@ type ScriptActionProps = {
 	label: string
 	scriptId: string
 	showDate?: boolean
+	order?: number
 }
 const ScriptAction = ({
 	mutation,
@@ -204,6 +205,7 @@ const ScriptAction = ({
 	label,
 	scriptId,
 	showDate = false,
+	order,
 }: ScriptActionProps) => {
 	const isScript1 = scriptId === '1'
 	const { classes } = useGlobalStyles()
@@ -334,7 +336,7 @@ const ScriptAction = ({
 				<Group position="apart" align="baseline" spacing={'xl'}>
 					<Stack sx={{ flex: 1 }}>
 						<Text weight={500} sx={{ maxWidth: 700 }}>
-							{title}
+							{order}. {title}
 						</Text>
 
 						<Button
@@ -378,21 +380,24 @@ const ScriptAction = ({
 				title={title}
 			>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
-					{showDate && (
-						<DatePicker
-							locale="vi"
-							label="Chọn thời gian"
-							{...form.getInputProps('date')}
-							sx={{ flex: 1, maxWidth: 300 }}
+					<Group position="right">
+						{showDate && (
+							<DatePicker
+								locale="vi"
+								label="Thời gian"
+								{...form.getInputProps('date')}
+								sx={{ flex: 1, maxWidth: 300 }}
+							/>
+						)}
+						<NumberInput
+							label={'Số lượng'}
+							data-autofocus
+							className={classes.numberInput}
+							min={1}
+							{...form.getInputProps('num')}
+							sx={{ flex: 1 }}
 						/>
-					)}
-					<NumberInput
-						label={label}
-						data-autofocus
-						className={classes.numberInput}
-						min={1}
-						{...form.getInputProps('num')}
-					/>
+					</Group>
 					<Button fullWidth mt="md" type="submit" loading={isLoading}>
 						Xác nhận
 					</Button>

@@ -20,6 +20,7 @@ import {
 	TablerIcon,
 	IconTimeline,
 	IconHome,
+	IconCalendarStats,
 } from '@tabler/icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -36,7 +37,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 		navbar: {
 			position: 'fixed',
 			top: 0,
-			zIndex: 9999,
+			zIndex: 99,
 		},
 		title: {
 			textTransform: 'uppercase',
@@ -87,6 +88,7 @@ const data = [
 	{ link: '', secondLink: '/', label: 'Thống kê', icon: IconHome },
 	{ link: '/configs', label: 'Thông số', icon: IconPackage },
 	{ link: '/records', label: 'Quản lí bệnh án', icon: IconList },
+	{ link: '/schedule', label: 'Theo dõi lịch khám', icon: IconCalendarStats },
 	{ link: '/import', label: 'Cập nhật dữ liệu', icon: IconTimeline },
 ]
 

@@ -23,3 +23,24 @@ export type Schedule = {
 	'Chiều CN'?: number
 	'Tối CN'?: number
 }
+
+export interface IScheduleDoctor {
+	id: number
+	name: string
+	department: string
+	departmentId: number
+}
+
+export interface IScheduleSlot {
+	estimatedStartTime: string
+	patientName?: any
+	isAvailable: boolean
+	isFinished: boolean
+}
+
+export interface IScheduleSlotOfDoctor {
+	session: number
+	roomNumber: string
+	floor: string
+	slots: IScheduleSlot[]
+}
