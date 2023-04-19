@@ -57,8 +57,9 @@ const Schedule = () => {
 			})
 	}
 	const getSlotsForDoctor = async (id: number) => {
+		if (!time) return
 		await triggerGetSlotsOfDoctor({
-			date: time?.toISOString() ?? undefined,
+			date: `${formatDate(time?.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`,
 			doctorId: id.toString(),
 		})
 			.unwrap()
