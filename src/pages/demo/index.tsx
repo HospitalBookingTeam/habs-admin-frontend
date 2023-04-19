@@ -93,6 +93,7 @@ const DemoScript = () => {
 			title: 'Đặt lịch cho ngẫu nhiên X người',
 			label: 'Script 1',
 			showDate: true,
+			defaultValue: 100,
 		},
 		// {
 		// 	scriptId: '2',
@@ -106,6 +107,7 @@ const DemoScript = () => {
 			mutation: useScript3Mutation,
 			title: 'Checkin cho ngẫu nhiên X người đã đặt lịch',
 			label: 'Script 3',
+			defaultValue: 70,
 		},
 		{
 			scriptId: '4',
@@ -113,36 +115,42 @@ const DemoScript = () => {
 			title:
 				'Hoàn thành ngẫu nhiên X bệnh án + đặt ngẫu nhiên đơn thuốc, mỗi đơn từ 6 đến 10 thuốc',
 			label: 'Script 4',
+			defaultValue: 20,
 		},
 		{
 			scriptId: '5',
 			mutation: useScript5Mutation,
-			title: 'Đặt từ 1 đến 3 xét nghiệm cho X người ngẫu nhiên',
+			title: 'Chỉ định từ 1 đến 3 xét nghiệm cho X người ngẫu nhiên',
 			label: 'Script 5',
+			defaultValue: 40,
 		},
 		{
 			scriptId: '6',
 			mutation: useScript6Mutation,
 			title: 'Thanh toán phí XN cho X người ngẫu nhiên',
 			label: 'Script 6',
+			defaultValue: 30,
 		},
 		{
 			scriptId: '7',
 			mutation: useScript7Mutation,
 			title: 'Checkin cho X người ngẫu nhiên đã thanh toán phí xét nghiệm',
 			label: 'Script 7',
+			defaultValue: 20,
 		},
 		{
 			scriptId: '8',
 			mutation: useScript8Mutation,
 			title: 'Hoàn thành tất cả xét nghiệm cho X bệnh án',
 			label: 'Script 8',
+			defaultValue: 15,
 		},
 		{
 			scriptId: '9',
 			mutation: useScript9Mutation,
 			title: 'Checkin quay lại phòng khám cho X bệnh án',
 			label: 'Script 9',
+			defaultValue: 10,
 		},
 	]
 
@@ -198,6 +206,7 @@ type ScriptActionProps = {
 	scriptId: string
 	showDate?: boolean
 	order?: number
+	defaultValue?: number
 }
 const ScriptAction = ({
 	mutation,
@@ -206,6 +215,7 @@ const ScriptAction = ({
 	scriptId,
 	showDate = false,
 	order,
+	defaultValue,
 }: ScriptActionProps) => {
 	const isScript1 = scriptId === '1'
 	const { classes } = useGlobalStyles()
@@ -228,7 +238,7 @@ const ScriptAction = ({
 
 	const form = useForm<{ num: number; date?: Date }>({
 		initialValues: {
-			num: 1,
+			num: defaultValue ?? 1,
 			date: undefined,
 		},
 
