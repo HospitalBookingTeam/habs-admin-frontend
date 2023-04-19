@@ -116,7 +116,7 @@ const PatientManage = () => {
 			}}
 			className="row-link"
 			onClick={() => {
-				window.open(`manage/${row.id}`, '_blank')
+				window.open(`records/${row.id}`, '_blank')
 			}}
 		>
 			<td>

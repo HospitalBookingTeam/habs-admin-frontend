@@ -115,6 +115,9 @@ const TestRecordManage = () => {
 				background: index % 2 === 0 ? 'transparent' : theme.colors.gray[1],
 			}}
 			className="row-link"
+			onClick={() => {
+				window.open(`tests/${row.id}`, '_blank')
+			}}
 		>
 			<td>
 				<Text align="center">{row?.numericalOrder ?? '---'}</Text>
