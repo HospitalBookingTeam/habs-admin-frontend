@@ -43,14 +43,19 @@ const Schedule = () => {
 		}
 	}, [isNowSuccess])
 
-	const [triggerGetSchedule, { isLoading: isLoadingSchedule }] =
-		useLazyGetScheduleByDoctorQuery()
+	const [
+		triggerGetSchedule,
+		{ isLoading: isLoadingSchedule, isFetching: isFetchingSchedule },
+	] = useLazyGetScheduleByDoctorQuery()
 
 	const [triggerGetSlotsOfDoctor, { isLoading: isLoadingSlots }] =
 		useLazyGetSlotsByDoctorQuery()
 
 	const handleGetSchedule = async () => {
-		await triggerGetSchedule({ date: time?.toISOString() ?? undefined })
+		if (!time) return
+		await triggerGetSchedule({
+			date: `${formatDate(time?.toString(), 'YYYY-MM-DDTHH:mm:ss')}Z`,
+		})
 			.unwrap()
 			.then((resp) => {
 				setSchedule(handleIScheduleResponse(resp))
@@ -83,7 +88,10 @@ const Schedule = () => {
 							onChange={setTime}
 							sx={{ flex: 1, maxWidth: 300 }}
 						/>
-						<Button onClick={handleGetSchedule} loading={isLoadingSchedule}>
+						<Button
+							onClick={handleGetSchedule}
+							loading={isLoadingSchedule || isFetchingSchedule}
+						>
 							Lấy lịch
 						</Button>
 					</Group>

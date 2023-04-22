@@ -34,6 +34,8 @@
         "@types/react-dom": "^18.0.6",
         "@vitejs/plugin-react": "^2.0.1",
         "cypress": "^10.7.0",
+        "react-barcode": "^1.4.6",
+        "react-to-print": "^2.14.12",
         "rome": "^0.8.0-next.ff4153b",
         "typescript": "^4.6.4",
         "vite": "^3.0.7",

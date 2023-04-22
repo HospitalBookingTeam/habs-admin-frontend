@@ -13,12 +13,15 @@ import {
 	Tabs,
 	Title,
 	LoadingOverlay,
+	Box,
+	Group,
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 import PatientInfo from './PatientInfo'
 import HistoryRecord from './HistoryRecord'
 import MedicationList from './MedicationList'
 import PatientRecordTree from '@/components/Record/PatientRecordTree'
+import ReExamNote from './ReExamNote'
 
 const RecordHistory = () => {
 	const [activeTab, setActiveTab] = useState<string | null>('record')
@@ -46,12 +49,14 @@ const RecordHistory = () => {
 					</Tabs.List>
 					<Tabs.Panel value="record" pt="xs">
 						<Stack>
-							<Text>
-								Thời gian:{' '}
-								<Text span color="green" weight={500}>
-									{recordData?.date ? formatDate(recordData.date) : '---'}
+							<Group position="apart">
+								<Text>
+									Thời gian:{' '}
+									<Text span color="green" weight={'bolder'}>
+										{recordData?.date ? formatDate(recordData.date) : '---'}
+									</Text>
 								</Text>
-							</Text>
+							</Group>
 							<Divider />
 							<PatientInfo data={recordData?.patientData} />
 							<Divider />
@@ -69,6 +74,14 @@ const RecordHistory = () => {
 								<>
 									<Divider />
 									<MedicationList data={recordData?.prescription} />
+								</>
+							) : (
+								<></>
+							)}
+							{recordData?.reExam ? (
+								<>
+									<Divider />
+									<ReExamNote {...recordData?.reExam} />
 								</>
 							) : (
 								<></>

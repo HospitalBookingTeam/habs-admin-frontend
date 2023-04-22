@@ -12,10 +12,43 @@ export interface IcdDiseases {
 	icdDiseaseName: string
 	icdCode: string
 }
+
+export interface IOperationReExam {
+	operationName: string
+	id: number
+}
+export interface ReExamCheckup {
+	date: string
+	operations: IOperationReExam[]
+	note: string
+}
+
+export interface Detail {
+	id: number
+	quantity: number
+	usage: string
+	unit: string
+	morningDose: number
+	middayDose: number
+	eveningDose: number
+	nightDose: number
+	medicineName: string
+	prescriptionId: number
+	medicineId: number
+}
+
+export interface Prescription {
+	id: number
+	timeCreated: string
+	note: string
+	checkupRecordId: number
+	details: Detail[]
+	code?: string
+}
 export interface HistoryCheckupRecord {
 	patientData: PatientData
 	testRecords: any[]
-	prescription?: any
+	prescription?: Prescription
 	id: number
 	status: number
 	numericalOrder: number
@@ -41,7 +74,7 @@ export interface HistoryCheckupRecord {
 	hasReExam: boolean
 	reExamNote?: any
 	address: string
-	reExam?: any
+	reExam?: ReExamCheckup
 	roomNumber?: string
 	floor?: string
 	code?: string
