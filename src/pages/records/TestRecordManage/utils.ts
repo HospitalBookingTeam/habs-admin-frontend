@@ -39,7 +39,6 @@ export const sortData = (
 
 const hiddenStatus = [
 	TestRecordStatus.DA_HUY,
-	TestRecordStatus.DA_DAT_LICH,
 	TestRecordStatus.CHUA_DAT_LICH,
 	TestRecordStatus.DA_XOA,
 ]
@@ -78,6 +77,8 @@ export const mapColorToStatus = (status: TestRecordStatus) => {
 	switch (status) {
 		case TestRecordStatus.CHECKED_IN:
 			return 'green'
+		case TestRecordStatus.DA_DAT_LICH:
+			return 'gray'
 		case TestRecordStatus.DA_THANH_TOAN:
 			return 'blue'
 		case TestRecordStatus.DANG_TIEN_HANH:

@@ -103,7 +103,7 @@ export const TEST_RECORD_TRANSLATION: {
 	[key in keyof typeof TestRecordStatus]: string
 } = {
 	CHUA_DAT_LICH: 'Chưa đặt lịch',
-	DA_DAT_LICH: 'Đã đặt lịch',
+	DA_DAT_LICH: 'Đã chỉ định',
 	DA_THANH_TOAN: 'Đã thanh toán',
 	CHECKED_IN: 'Đã checkin',
 	DANG_TIEN_HANH: 'Đang xét nghiệm',

@@ -119,9 +119,9 @@ const PatientManage = () => {
 				window.open(`records/${row.id}`, '_blank')
 			}}
 		>
-			<td>
+			{/* <td>
 				<Text align="center">{row.numericalOrder}</Text>
-			</td>
+			</td> */}
 			<td>
 				<Text
 					sx={{
@@ -148,9 +148,9 @@ const PatientManage = () => {
 				</Badge>
 			</td>
 			<td>{`${row.roomNumber} tầng ${row.floor}`}</td>
-			<td>
+			{/* <td>
 				<Text align="center">{row.isReExam ? 'Có' : 'Không'}</Text>
-			</td>
+			</td> */}
 			<td>
 				<Text>{row?.date ? formatDate(row.date) : '---'}</Text>
 			</td>
@@ -200,14 +200,14 @@ const PatientManage = () => {
 				<Table horizontalSpacing="md" verticalSpacing="xs">
 					<thead>
 						<tr>
-							<Th
+							{/* <Th
 								sorted={sortBy === 'numericalOrder'}
 								reversed={reverseSortDirection}
 								onSort={() => setSorting('numericalOrder')}
 								width={100}
 							>
 								SKB
-							</Th>
+							</Th> */}
 							<Th
 								sorted={sortBy === 'patientName'}
 								reversed={reverseSortDirection}
@@ -237,21 +237,21 @@ const PatientManage = () => {
 							>
 								Phòng
 							</Th>
-							<Th
+							{/* <Th
 								sorted={sortBy === 'isReExam'}
 								reversed={reverseSortDirection}
 								onSort={() => setSorting('isReExam')}
 								width={130}
 							>
 								Tái khám
-							</Th>
+							</Th> */}
 							<Th
 								sorted={sortBy === 'date'}
 								reversed={reverseSortDirection}
 								onSort={() => setSorting('date')}
 								width={200}
 							>
-								Thời gian
+								Thời gian dự kiến
 							</Th>
 						</tr>
 					</thead>

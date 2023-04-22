@@ -25,12 +25,14 @@ import { IResult, handleIScheduleResponse } from './utils'
 import { formatDate } from '@/utils/formats'
 import { IScheduleSlotOfDoctor } from '@/entities/schedule'
 import { translateSession } from '@/utils/enums'
+import { useAppSelector } from '@/store/hooks'
+import { selectTime } from '@/store/configs/selectors'
 
 const Schedule = () => {
-	const [time, setTime] = useState<Date | null>(new Date())
-	const { data: now, isSuccess: isNowSuccess } = useGetNowQuery(undefined, {
-		refetchOnMountOrArgChange: true,
-	})
+	const configTime = useAppSelector(selectTime)
+	const [time, setTime] = useState<Date | null>(
+		new Date(dayjs().valueOf() + (configTime ?? 0))
+	)
 	const [schedule, setSchedule] = useState<IResult>()
 	const [isOpen, setIsOpen] = useState(false)
 	const [doctorName, setDoctorName] = useState('')
@@ -38,18 +40,18 @@ const Schedule = () => {
 		useState<IScheduleSlotOfDoctor[]>()
 
 	useEffect(() => {
-		if (isNowSuccess) {
-			setTime(dayjs(now).toDate())
-		}
-	}, [isNowSuccess])
+		setTime(new Date(dayjs().valueOf() + (configTime ?? 0)))
+	}, [configTime])
 
 	const [
 		triggerGetSchedule,
 		{ isLoading: isLoadingSchedule, isFetching: isFetchingSchedule },
 	] = useLazyGetScheduleByDoctorQuery()
 
-	const [triggerGetSlotsOfDoctor, { isLoading: isLoadingSlots }] =
-		useLazyGetSlotsByDoctorQuery()
+	const [
+		triggerGetSlotsOfDoctor,
+		{ isLoading: isLoadingSlots, isFetching: isFetchingSlots },
+	] = useLazyGetSlotsByDoctorQuery()
 
 	const handleGetSchedule = async () => {
 		if (!time) return
@@ -113,7 +115,7 @@ const Schedule = () => {
 													setDoctorName(doctor.name)
 												}}
 												variant="outline"
-												loading={isLoadingSlots && doctorName === doctor.name}
+												loading={isFetchingSlots && doctorName === doctor.name}
 											>
 												BS. {doctor.name}
 											</Button>

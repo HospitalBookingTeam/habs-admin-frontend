@@ -119,9 +119,9 @@ const TestRecordManage = () => {
 				window.open(`tests/${row.id}`, '_blank')
 			}}
 		>
-			<td>
+			{/* <td>
 				<Text align="center">{row?.numericalOrder ?? '---'}</Text>
-			</td>
+			</td> */}
 			<td>
 				<Text
 					sx={{
@@ -197,14 +197,14 @@ const TestRecordManage = () => {
 				<Table horizontalSpacing="md" verticalSpacing="xs">
 					<thead>
 						<tr>
-							<Th
+							{/* <Th
 								sorted={sortBy === 'numericalOrder'}
 								reversed={reverseSortDirection}
 								onSort={() => setSorting('numericalOrder')}
 								width={100}
 							>
 								SKB
-							</Th>
+							</Th> */}
 							<Th
 								sorted={sortBy === 'patientName'}
 								reversed={reverseSortDirection}
