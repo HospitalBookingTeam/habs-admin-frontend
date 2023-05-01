@@ -134,3 +134,42 @@ export const SESSION_TRANSLATION: {
 
 export const translateSession = (status: number) =>
 	SESSION_TRANSLATION[SessionType[status] as keyof typeof SessionType]
+
+export enum BillStatus {
+	CHUA_TT,
+	DA_TT_EBANKING,
+	DA_TT_TIEN_MAT,
+	HUY,
+	DANG_XU_LI_EBANKING,
+}
+export const BILL_TRANSLATION: {
+	[key in keyof typeof BillStatus]: string
+} = {
+	CHUA_TT: 'Chưa thanh toán',
+	DA_TT_EBANKING: 'Đã thanh toán ebanking',
+	DA_TT_TIEN_MAT: 'Đã thanh toán tiền mặt',
+	HUY: 'Đã hủy',
+	DANG_XU_LI_EBANKING: 'Đang xử lý',
+}
+
+export const translateBill = (status: number) =>
+	BILL_TRANSLATION[BillStatus[status] as keyof typeof BillStatus]
+
+export enum InsuranceSupportStatus {
+	KHONG_HO_TRO,
+	HO_TRO_MOT_PHAN,
+	HO_TRO_TOAN_PHAN,
+}
+
+export const INSURANCE_TRANSLATION: {
+	[key in keyof typeof InsuranceSupportStatus]: string
+} = {
+	KHONG_HO_TRO: 'Không hỗ trợ',
+	HO_TRO_MOT_PHAN: 'Hỗ trợ một phần',
+	HO_TRO_TOAN_PHAN: 'Hỗ trợ toàn phần',
+}
+
+export const translateEnumInsuranceStatus = (status: number) =>
+	INSURANCE_TRANSLATION[
+		InsuranceSupportStatus[status] as keyof typeof InsuranceSupportStatus
+	]

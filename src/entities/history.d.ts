@@ -1,3 +1,5 @@
+import { Bill } from './bill'
+
 export interface Patient {
 	id: number
 	phoneNumber: string
@@ -78,6 +80,8 @@ export interface HistoryCheckupRecord {
 	roomNumber?: string
 	floor?: string
 	code?: string
+	bill: Bill[]
+	checkinTime: string
 }
 
 export interface HistoryTestRecord {

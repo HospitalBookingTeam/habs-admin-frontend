@@ -1,6 +1,7 @@
 import RowWithLabel from '@/components/Row'
 import { HistoryCheckupRecord } from '@/entities/history'
-import { Stack, Title, Grid } from '@mantine/core'
+import { translateCheckupRecordStatus } from '@/utils/enums'
+import { Stack, Title, Grid, Group } from '@mantine/core'
 
 const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 	return (
@@ -11,8 +12,21 @@ const HistoryRecord = ({ data }: { data?: HistoryCheckupRecord }) => {
 
 			<Stack>
 				<RowWithLabel label="Mã số" content={data?.code ?? '---'} />
-				<RowWithLabel label="Khoa" content={data?.departmentName} isOdd />
-				<RowWithLabel label="Bác sĩ" content={data?.doctorName} />
+				<Group spacing={0}>
+					<RowWithLabel
+						label="Bác sĩ"
+						labelSpan={6}
+						content={data?.doctorName}
+						isOdd
+					/>
+					<RowWithLabel label="Khoa" content={data?.departmentName} isOdd />
+				</Group>
+				<RowWithLabel
+					label="Tình trạng"
+					content={
+						data?.status ? translateCheckupRecordStatus(data?.status) : '---'
+					}
+				/>
 				<RowWithLabel
 					label="Phòng"
 					content={`Phòng khám ${data?.roomNumber ?? '--'} tầng ${

@@ -15,6 +15,7 @@ import {
 	LoadingOverlay,
 	Box,
 	Group,
+	Button,
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 import PatientInfo from './PatientInfo'
@@ -22,6 +23,8 @@ import HistoryRecord from './HistoryRecord'
 import MedicationList from './MedicationList'
 import PatientRecordTree from '@/components/Record/PatientRecordTree'
 import ReExamNote from './ReExamNote'
+import { openModal } from '@mantine/modals'
+import Bills from './Bill'
 
 const RecordHistory = () => {
 	const [activeTab, setActiveTab] = useState<string | null>('record')
@@ -49,14 +52,24 @@ const RecordHistory = () => {
 					</Tabs.List>
 					<Tabs.Panel value="record" pt="xs">
 						<Stack>
-							<Group position="apart">
+							<Stack spacing={'xs'}>
 								<Text>
-									Thời gian:{' '}
-									<Text span color="green" weight={'bolder'}>
-										{recordData?.date ? formatDate(recordData.date) : '---'}
+									Thời gian dự kiến:{' '}
+									<Text span color="dimmed" weight={'bolder'}>
+										{recordData?.estimatedStartTime
+											? formatDate(recordData.estimatedStartTime)
+											: '---'}
 									</Text>
 								</Text>
-							</Group>
+								<Text>
+									Thời gian checkin:{' '}
+									<Text span color="green" weight={'bolder'}>
+										{recordData?.checkinTime
+											? formatDate(recordData.checkinTime)
+											: '---'}
+									</Text>
+								</Text>
+							</Stack>
 							<Divider />
 							<PatientInfo data={recordData?.patientData} />
 							<Divider />
@@ -85,6 +98,24 @@ const RecordHistory = () => {
 								</>
 							) : (
 								<></>
+							)}
+
+							{!!recordData?.bill?.length && (
+								<Box>
+									<Button
+										variant="outline"
+										onClick={() => {
+											openModal({
+												title: 'Chi tiết hóa đơn',
+												children: <Bills data={recordData.bill} />,
+												centered: true,
+												size: 'lg',
+											})
+										}}
+									>
+										Tra cứu hóa đơn
+									</Button>
+								</Box>
 							)}
 						</Stack>
 					</Tabs.Panel>
