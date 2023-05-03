@@ -27,6 +27,7 @@ export interface Bill {
 	details?: BillDetail[]
 	title?: string
 	code: string
+	payDate: string
 }
 
 export interface PatientData {

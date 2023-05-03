@@ -25,6 +25,7 @@ import PatientRecordTree from '@/components/Record/PatientRecordTree'
 import ReExamNote from './ReExamNote'
 import { openModal } from '@mantine/modals'
 import Bills from './Bill'
+import PrintDetail from './PrintDetail'
 
 const RecordHistory = () => {
 	const [activeTab, setActiveTab] = useState<string | null>('record')
@@ -52,24 +53,27 @@ const RecordHistory = () => {
 					</Tabs.List>
 					<Tabs.Panel value="record" pt="xs">
 						<Stack>
-							<Stack spacing={'xs'}>
-								<Text>
-									Thời gian dự kiến:{' '}
-									<Text span color="dimmed" weight={'bolder'}>
-										{recordData?.estimatedStartTime
-											? formatDate(recordData.estimatedStartTime)
-											: '---'}
+							<Group position="apart">
+								<Stack spacing={'xs'}>
+									<Text>
+										Thời gian dự kiến:{' '}
+										<Text span color="dimmed" weight={'bolder'}>
+											{recordData?.estimatedStartTime
+												? formatDate(recordData.estimatedStartTime)
+												: '---'}
+										</Text>
 									</Text>
-								</Text>
-								<Text>
-									Thời gian checkin:{' '}
-									<Text span color="green" weight={'bolder'}>
-										{recordData?.checkinTime
-											? formatDate(recordData.checkinTime)
-											: '---'}
+									<Text>
+										Thời gian checkin:{' '}
+										<Text span color="green" weight={'bolder'}>
+											{recordData?.checkinTime
+												? formatDate(recordData.checkinTime)
+												: '---'}
+										</Text>
 									</Text>
-								</Text>
-							</Stack>
+								</Stack>
+							</Group>
+
 							<Divider />
 							<PatientInfo data={recordData?.patientData} />
 							<Divider />
@@ -100,23 +104,28 @@ const RecordHistory = () => {
 								<></>
 							)}
 
-							{!!recordData?.bill?.length && (
-								<Box>
-									<Button
-										variant="outline"
-										onClick={() => {
-											openModal({
-												title: 'Chi tiết hóa đơn',
-												children: <Bills data={recordData.bill} />,
-												centered: true,
-												size: 'lg',
-											})
-										}}
-									>
-										Tra cứu hóa đơn
-									</Button>
+							<Group>
+								{!!recordData?.bill?.length && (
+									<Box>
+										<Button
+											variant="outline"
+											onClick={() => {
+												openModal({
+													title: 'Chi tiết hóa đơn',
+													children: <Bills data={recordData.bill} />,
+													centered: true,
+													size: 'lg',
+												})
+											}}
+										>
+											Tra cứu hóa đơn
+										</Button>
+									</Box>
+								)}
+								<Box sx={{ maxWidth: 150 }}>
+									{!!recordData && <PrintDetail data={recordData} />}
 								</Box>
-							)}
+							</Group>
 						</Stack>
 					</Tabs.Panel>
 					<Tabs.Panel value="reExamTree" pt="xs" sx={{ position: 'relative' }}>

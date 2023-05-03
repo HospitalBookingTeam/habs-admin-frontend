@@ -1,13 +1,8 @@
 import { Bill } from '@/entities/bill'
 import { translateBill } from '@/utils/enums'
 import { formatCurrency, formatDate } from '@/utils/formats'
-import { Group, Avatar, Text, Accordion, Stack, List } from '@mantine/core'
+import { Group, Text, Accordion, Stack, List } from '@mantine/core'
 import BillDetails from './BillDetails'
-
-interface AccordionLabelProps {
-	label: string
-	description: string
-}
 
 function AccordionLabel({ title, code, total, timeCreated }: Bill) {
 	return (
@@ -37,9 +32,15 @@ const Bills = ({ data }: { data: Bill[] }) => {
 				<Stack spacing={'sm'}>
 					<Stack spacing={0}>
 						<Text size={'xs'} weight={'bolder'}>
-							Thời gian
+							Thời gian tạo
 						</Text>
 						<Text size="sm">{formatDate(item.timeCreated)}</Text>
+					</Stack>
+					<Stack spacing={0}>
+						<Text size={'xs'} weight={'bolder'}>
+							Thời gian thanh toán
+						</Text>
+						<Text size="sm">{formatDate(item.payDate)}</Text>
 					</Stack>
 					<Stack spacing={0}>
 						<Text size={'xs'} weight={'bolder'}>
