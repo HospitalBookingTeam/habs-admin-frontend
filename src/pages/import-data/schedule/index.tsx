@@ -94,7 +94,7 @@ const ImportSchedule = () => {
 			<Center py="lg">
 				<Stack>
 					<Stack>
-						<Title order={4}>Chọn lịch khám</Title>
+						<Title order={4}>Chọn thời gian</Title>
 
 						<Group position="apart">
 							<Input
